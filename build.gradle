@@ -1,0 +1,49 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.0'
+}
+
+group 'ar.edu.itba.ss'
+version '0.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://maven.jzy3d.org/releases/'
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0'
+    compile 'org.jetbrains.kotlin:kotlin-reflect:1.3.0'
+
+    compile 'com.github.ajalt:clikt:1.4.0'
+    compile 'me.tongfei:progressbar:0.7.1'
+
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.0'
+
+    compile 'io.github.microutils:kotlin-logging:1.5.9'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+
+    compile 'org.knowm.xchart:xchart:3.5.2'
+    compile 'org.jzy3d:jzy3d-api:1.0.2'
+    compile 'org.jzy3d:jzy3d-tools-libsvm:1.0.2'
+    compile 'org.jzy3d:jzy3d-svm-mapper:1.0.2'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ar.edu.itba.sysi.MainKt'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
