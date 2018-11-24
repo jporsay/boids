@@ -15,6 +15,6 @@ class Cell {
     }
 
     fun getNear(entity: Entity, distance: Double): List<Entity> {
-        return entities.filter { it.position.distance(entity.position) <= distance }
+        return entities.filter { (it.position.distance(entity.position) <= distance) && (it.id != entity.id) }
     }
 }
