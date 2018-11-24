@@ -1,6 +1,6 @@
 package ar.edu.itba.ss.model
 
-import ar.edu.itba.ss.utils.toXYZ
+import ar.edu.itba.ss.extensions.toXYZ
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
 open class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
