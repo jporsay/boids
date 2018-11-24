@@ -1,5 +1,7 @@
 package ar.edu.itba.ss.command
 
+import ar.edu.itba.ss.Simulation
+import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.io.UniverseImporter
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
@@ -14,6 +16,9 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
 
     private val loop: Boolean by option(help = "Loop contours").flag()
 
+    private val fpsDefault = 60
+    private val fps: Int by option(help = "Simulation frames per second. Default $fpsDefault").int().default(fpsDefault)
+
     private val inputPathDefault = "universe.xyz"
     private val inputPath: String by option(help = "Simulation input file. Default '$inputPathDefault'").default(inputPathDefault)
 
@@ -22,6 +27,13 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
 
     override fun run() {
         val universe = UniverseImporter(inputPath).next()
-
+        val dT = 1.0 / fps
+        val simulation = Simulation(universe, listOf(), dT)
+        UniverseExporter(outputPath).use { exporter ->
+            exporter.write(universe)
+            for (frame in 1..(seconds * fps)) {
+                exporter.write(simulation.step())
+            }
+        }
     }
 }

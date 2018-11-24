@@ -1,6 +1,7 @@
 package ar.edu.itba.ss.grid
 
 import ar.edu.itba.ss.model.Entity
+import java.lang.Math.floor
 
 class Grid(
     private val width: Int,
@@ -22,11 +23,10 @@ class Grid(
     }
 
     fun cellFor(entity: Entity): Cell {
-        val x = (entity.position.x / cellSide).toInt()
-        val y = (entity.position.y / cellSide).toInt()
-        val z = (entity.position.z / cellSide).toInt()
-
-        return cells[x][y][z]
+        val x = floor(entity.position.x / cellSide).toInt()
+        val y = floor(entity.position.y / cellSide).toInt()
+        val z = floor(entity.position.z / cellSide).toInt()
+        return this[x, y, z]
     }
 
     private fun initNeighbours() {
