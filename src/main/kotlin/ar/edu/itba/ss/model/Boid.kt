@@ -32,7 +32,7 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
                 val parts = line.split("\t")
                 val out = Builder()
                 out.id = parts[0].toInt()
-                out.type = Type.valueOf(parts[1])
+                out.type = Type.fromInt(parts[1].toInt())
                 if (out.type == Type.None) throw IllegalArgumentException("Error parsing line. Entity can't be none:\n\t$line")
                 out.radius = parts[2].toDouble()
                 out.position = Vector3D(parts[3].toDouble(), parts[4].toDouble(), parts[5].toDouble())

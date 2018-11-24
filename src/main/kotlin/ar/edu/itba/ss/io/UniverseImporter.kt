@@ -23,7 +23,7 @@ class UniverseImporter(inputPath: String) : Iterator<Universe> {
             val entity = Entity.Builder.fromXYZ(nextLine()).build()
             if (entity.id >= 0) {
                 entitiesParsed++
-                entities.add(Entity.Builder.fromXYZ(nextLine()).build())
+                entities.add(entity)
             } else {
                 entityCount--
             }
