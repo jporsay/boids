@@ -5,6 +5,7 @@ import ar.edu.itba.ss.generator.IdProvider
 import ar.edu.itba.ss.generator.PredatorGenerator
 import ar.edu.itba.ss.model.Universe
 import ar.edu.itba.ss.io.UniverseExporter
+import ar.edu.itba.ss.model.UniverseMetadata
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -43,9 +44,11 @@ class Generate : CliktCommand(help = "Generate a universe") {
         val boidsGenerator = BoidGenerator(idProvider, boids, boidSpeed, width, height, depth)
         val predatorGenerator = PredatorGenerator(idProvider, predators, predatorSpeed, width, height, depth)
         builder.entities = boidsGenerator.generate() + predatorGenerator.generate()
-        builder.width = width
-        builder.height = height
-        builder.depth = depth
+        val metadataBuilder = UniverseMetadata.Builder()
+        metadataBuilder.width = width
+        metadataBuilder.height = height
+        metadataBuilder.depth = depth
+        builder.metadata = metadataBuilder
         UniverseExporter(outputPath).use {
             it.write(builder.build())
         }
