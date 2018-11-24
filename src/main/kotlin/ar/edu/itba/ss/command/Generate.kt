@@ -4,7 +4,7 @@ import ar.edu.itba.ss.generator.BoidGenerator
 import ar.edu.itba.ss.generator.IdProvider
 import ar.edu.itba.ss.generator.PredatorGenerator
 import ar.edu.itba.ss.model.Universe
-import ar.edu.itba.ss.utils.UniverseExporter
+import ar.edu.itba.ss.io.UniverseExporter
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option

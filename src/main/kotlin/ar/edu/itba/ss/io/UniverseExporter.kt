@@ -1,4 +1,4 @@
-package ar.edu.itba.ss.utils
+package ar.edu.itba.ss.io
 
 import ar.edu.itba.ss.model.Universe
 import java.io.*
