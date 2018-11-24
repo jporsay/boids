@@ -42,7 +42,7 @@ compileTestKotlin {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'ar.edu.itba.sysi.MainKt'
+        attributes 'Main-Class': 'ar.edu.itba.ss.MainKt'
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

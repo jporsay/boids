@@ -1,10 +1,32 @@
 package ar.edu.itba.ss.grid
 
-class Grid(private val width: Int, private val height: Int, private val depth: Int, private val loopContour: Boolean) {
-    private var cells: Array<Array<Array<Cell>>> = Array(width) { x -> Array(height) { y -> Array(depth) { z -> Cell(x, y, z) } } }
+import ar.edu.itba.ss.model.Entity
+
+class Grid(
+    private val width: Int,
+    private val height: Int,
+    private val depth: Int,
+    private val cellSide: Double,
+    private val loopContour: Boolean,
+    val entities: List<Entity>
+) {
+    private var cells: Array<Array<Array<Cell>>> = Array(width) { Array(height) { Array(depth) { Cell() } } }
 
     init {
         initNeighbours()
+        initEntities()
+    }
+
+    private fun initEntities() {
+        entities.forEach { cellFor(it).add(it) }
+    }
+
+    fun cellFor(entity: Entity): Cell {
+        val x = (entity.position.x / cellSide).toInt()
+        val y = (entity.position.y / cellSide).toInt()
+        val z = (entity.position.z / cellSide).toInt()
+
+        return cells[x][y][z]
     }
 
     private fun initNeighbours() {
@@ -24,6 +46,7 @@ class Grid(private val width: Int, private val height: Int, private val depth: I
             -1 to 0 to 1,
             -1 to 1 to 1,
             -1 to -1 to 1,
+            0 to 0 to 1,
             0 to 1 to 1,
             0 to -1 to 1,
 
@@ -33,6 +56,7 @@ class Grid(private val width: Int, private val height: Int, private val depth: I
             -1 to 0 to -1,
             -1 to 1 to -1,
             -1 to -1 to -1,
+            0 to 0 to -1,
             0 to 1 to -1,
             0 to -1 to -1
         )
