@@ -7,13 +7,13 @@ import java.io.BufferedReader
 import java.io.EOFException
 import java.io.FileReader
 
-class UniverseImporter(inputPath: String) : Iterator<Universe> {
+class UniverseImporter(inputPath: String) : Iterator<Universe.Builder> {
 
     private val buffer = BufferedReader(FileReader(inputPath))
 
     override fun hasNext(): Boolean = buffer.ready()
 
-    override fun next(): Universe {
+    override fun next(): Universe.Builder {
         val builder = Universe.Builder()
         var entityCount = parseInt(nextLine(), "Invalid particle count. Got %s")
         builder.metadata = UniverseMetadata.Builder.fromXYZ(nextLine())
@@ -29,7 +29,7 @@ class UniverseImporter(inputPath: String) : Iterator<Universe> {
             }
         }
         builder.entities = entities
-        return builder.build()
+        return builder
     }
 
     private fun nextLine(): String {

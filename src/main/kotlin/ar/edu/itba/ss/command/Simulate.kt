@@ -1,8 +1,10 @@
 package ar.edu.itba.ss.command
 
 import ar.edu.itba.ss.Simulation
+import ar.edu.itba.ss.io.OriginStartBoundaryProvider
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.io.UniverseImporter
+import ar.edu.itba.ss.model.Universe
 import ar.edu.itba.ss.rules.AvoidBoid
 import ar.edu.itba.ss.rules.CenterOfMass
 import com.github.ajalt.clikt.core.CliktCommand
@@ -34,7 +36,9 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private val maxSpeed: Double by option(help = "Maximum void speed. Default '$maxSpeedDefault'").double().default(maxSpeedDefault)
 
     override fun run() {
-        val universe = UniverseImporter(inputPath).next()
+        val builder = UniverseImporter(inputPath).next()
+        builder.metadata.loopContour = loop
+        val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
             CenterOfMass(100.0),
