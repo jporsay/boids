@@ -42,7 +42,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
             CenterOfMass(100.0),
-            AvoidBoid(1.0)
+            AvoidBoid(0.2)
         ), dT, limitSpeed, maxSpeed)
         UniverseExporter(outputPath, boundaryProvider = OriginStartBoundaryProvider()).use { exporter ->
             exporter.write(universe)
