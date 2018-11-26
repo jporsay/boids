@@ -8,7 +8,7 @@ class Universe(
     val metadata: UniverseMetadata,
     val entities: List<Entity>
 ) {
-    val grid: Grid = Grid(
+    private val grid: Grid = Grid(
         width = (metadata.width / metadata.interactionDistance).roundToInt(),
         height = (metadata.height / metadata.interactionDistance).roundToInt(),
         depth = (metadata.depth / metadata.interactionDistance).roundToInt(),
