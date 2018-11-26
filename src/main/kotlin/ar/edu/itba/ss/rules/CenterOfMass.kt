@@ -13,8 +13,10 @@ class CenterOfMass(private val factor: Double) : Rule() {
 
     override fun doApply(entity: Entity, universe: Universe): Vector3D {
 
-        val neighbours = universe.getNear(entity)
+        val neighbours = universe.getNear(entity).filter { entity.sees(it) }
         if (neighbours.isEmpty()) return Vector3D.ZERO
+
+
 
         val centerOfMass = neighbours.map { it.position }.reduce { acc, vector3D -> acc + vector3D } / neighbours.size
         return centerOfMass / factor

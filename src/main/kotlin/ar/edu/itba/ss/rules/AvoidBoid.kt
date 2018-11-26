@@ -11,15 +11,15 @@ class AvoidBoid(private val distance: Double): Rule() {
     override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
     override fun doApply(entity: Entity, universe: Universe): Vector3D {
-        val neighbours = universe.getNear(entity)
+        val neighbours = universe.getNear(entity, distance)
         if (neighbours.isEmpty()) return Vector3D.ZERO
 
         var out = Vector3D.ZERO
-        val awkwardNeighbours = neighbours.filter { it.position.distance(entity.position) < distance }
+        val visibleNeighbours = neighbours.filter { entity.sees(it) }
 
-        if (awkwardNeighbours.isEmpty()) return Vector3D.ZERO
+        if (visibleNeighbours.isEmpty()) return Vector3D.ZERO
 
-        awkwardNeighbours.forEach {
+        visibleNeighbours.forEach {
             out -= (it.position - entity.position)
         }
         return out
