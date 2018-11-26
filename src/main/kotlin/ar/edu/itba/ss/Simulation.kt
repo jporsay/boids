@@ -23,7 +23,6 @@ class Simulation(
                 velocity = velocity.add(it.apply(entity, universe))
             }
             velocity = clampVelocity(velocity)
-            velocity = boundAxis(entity.position, velocity)
             val position = entity.position + velocity * dT
             val builder = Entity.Builder(entity)
             builder.velocity = velocity
@@ -32,27 +31,6 @@ class Simulation(
         }
         universe = universeBuilder.build()
         return universe
-    }
-
-    private fun boundAxis(position: Vector3D, velocity: Vector3D): Vector3D {
-        val minBoundaryMargin = 0.01
-        val maxBoundaryMargin = 1.0 - minBoundaryMargin
-        var out = velocity
-        if (position.y < universe.metadata.height * minBoundaryMargin || position.y > universe.metadata.height * maxBoundaryMargin) {
-            out = Vector3D(velocity.x, -velocity.y, velocity.z)
-        }
-
-        if (universe.metadata.loopContour) return out
-
-        if (position.x < universe.metadata.width * minBoundaryMargin || position.x > universe.metadata.width * maxBoundaryMargin) {
-            out = Vector3D(-velocity.x, velocity.y, velocity.z)
-        }
-
-        if (position.z < universe.metadata.depth * minBoundaryMargin || position.z > universe.metadata.depth * maxBoundaryMargin) {
-            out = Vector3D(velocity.x, velocity.y, -velocity.z)
-        }
-
-        return out
     }
 
     private fun clampVelocity(velocity: Vector3D): Vector3D {
