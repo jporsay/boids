@@ -2,6 +2,7 @@ package ar.edu.itba.ss.model
 
 import ar.edu.itba.ss.extensions.toXYZ
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
+import kotlin.math.PI
 
 open class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
 
@@ -10,8 +11,16 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
     }
 
     fun sees(other: Entity): Boolean {
-        val maxVisionAngle = Math.PI * 0.75
-        return Vector3D.angle(velocity, other.velocity) < maxVisionAngle
+        /*
+        TODO:
+            Not sure if this works for every case.
+            Added some extra checks just in case
+         */
+        val maxVisionAngle = PI * 0.75
+        var angle = Vector3D.angle(velocity, other.velocity)
+        if (angle < 0) angle += 2 * PI
+        if (angle > 2 * PI) angle -= 2 * PI
+        return (angle < maxVisionAngle) || (angle > 1.25 * PI)
     }
 
     class Builder() {
