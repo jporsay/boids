@@ -9,7 +9,7 @@ fun Vector3D.toXYZ(): String {
 operator fun Vector3D.times(value: Double): Vector3D = this.scalarMultiply(value)
 operator fun Vector3D.div(value: Double): Vector3D = this.scalarMultiply(1 / value)
 operator fun Vector3D.div(value: Int): Vector3D = this.scalarMultiply(1.0 / value)
-operator fun Vector3D.minus(other: Vector3D): Vector3D = this.minus(other)
+operator fun Vector3D.minus(other: Vector3D): Vector3D = this.subtract(other)
 
 operator fun Vector3D.plus(other: Vector3D): Vector3D = this.add(other)
 
