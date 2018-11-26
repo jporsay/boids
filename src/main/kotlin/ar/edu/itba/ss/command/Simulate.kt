@@ -40,7 +40,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
             CenterOfMass(100.0),
             AvoidBoid(1.0)
         ), dT, limitSpeed, maxSpeed)
-        UniverseExporter(outputPath).use { exporter ->
+        UniverseExporter(outputPath, boundaryProvider = OriginStartBoundaryProvider()).use { exporter ->
             exporter.write(universe)
             for (frame in 1..(seconds * fps)) {
                 exporter.write(simulation.step())

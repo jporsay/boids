@@ -45,3 +45,4 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
 }
 class Boid(id: Int, radius: Double, position: Vector3D, velocity: Vector3D) : Entity(id, Type.Boid, radius, position, velocity)
 class Predator(id: Int, radius: Double, position: Vector3D, velocity: Vector3D) : Entity(id, Type.Predator, radius, position, velocity)
+class Boundary(position: Vector3D) : Entity(-1, Type.None, 0.000001, position, Vector3D.ZERO)
