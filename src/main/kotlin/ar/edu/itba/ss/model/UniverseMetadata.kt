@@ -18,7 +18,7 @@ class UniverseMetadata(
         var height: Double = 20.0
         var depth: Double = 20.0
         var loopContour: Boolean = true
-        var interactionDistance: Double = 10.0
+        var interactionDistance: Double = 1.0
 
         constructor(from: UniverseMetadata): this() {
             age = from.age
