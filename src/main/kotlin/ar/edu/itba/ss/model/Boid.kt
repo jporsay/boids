@@ -2,12 +2,16 @@ package ar.edu.itba.ss.model
 
 import ar.edu.itba.ss.extensions.toXYZ
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
-import java.lang.IllegalArgumentException
 
 open class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
 
     fun toXYZ(): String {
         return "$id\t${type.ordinal}\t$radius\t${position.toXYZ()}\t${velocity.toXYZ()}"
+    }
+
+    fun sees(other: Entity): Boolean {
+        val maxVisionAngle = Math.PI * 0.75
+        return Vector3D.angle(velocity, other.velocity) < maxVisionAngle
     }
 
     class Builder() {
