@@ -6,10 +6,11 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-class AvoidBoid(private val distance: Double): Rule {
-    override fun apply(entity: Entity, universe: Universe): Vector3D {
-        if (entity.type != Type.Boid) return Vector3D.ZERO
+class AvoidBoid(private val distance: Double): Rule() {
 
+    override fun appliesTo(type: Type): Boolean = type == Type.Boid
+
+    override fun doApply(entity: Entity, universe: Universe): Vector3D {
         val neighbours = universe.getNear(entity)
         if (neighbours.isEmpty()) return Vector3D.ZERO
 
