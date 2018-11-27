@@ -5,35 +5,30 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-class Boundary(private val boundaryMargin: Double = 0.05, private val speed: Double = 2.0): Rule() {
+class Boundary(private val speed: Double): Rule() {
 
     override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
     override fun doApply(entity: Entity, universe: Universe): Vector3D {
-        val minBoundaryMargin = boundaryMargin
-        val maxBoundaryMargin = 1.0 - minBoundaryMargin
-        val position = entity.position
-        var vy = 0.0
-        if (position.y < universe.metadata.height * minBoundaryMargin) {
-            vy = speed
-        } else if (position.y > universe.metadata.height * maxBoundaryMargin) {
-            vy = -speed
-        }
-
-        if (universe.metadata.loopContour) return Vector3D(0.0, vy, 0.0)
 
         var vx = 0.0
-        var vz = 0.0
-
-        if (position.x < universe.metadata.width * minBoundaryMargin) {
+        if (entity.position.x < universe.metadata.boundaries.xMin) {
             vx = speed
-        } else if (position.x > universe.metadata.width * maxBoundaryMargin) {
+        } else if (entity.position.x > universe.metadata.boundaries.xMax) {
             vx = -speed
         }
 
-        if (position.z < universe.metadata.depth * minBoundaryMargin) {
+        var vy = 0.0
+        if (entity.position.y < universe.metadata.boundaries.yMin) {
+            vy = speed
+        } else if (entity.position.y > universe.metadata.boundaries.yMax) {
+            vy = -speed
+        }
+
+        var vz = 0.0
+        if (entity.position.z < universe.metadata.boundaries.zMin) {
             vz = speed
-        } else if (position.z > universe.metadata.depth * maxBoundaryMargin) {
+        } else if (entity.position.z > universe.metadata.boundaries.zMax) {
             vz = -speed
         }
 
