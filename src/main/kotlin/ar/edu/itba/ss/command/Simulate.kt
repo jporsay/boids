@@ -15,7 +15,7 @@ import com.github.ajalt.clikt.parameters.types.int
 
 class Simulate : CliktCommand(help = "Simulate a given universe") {
 
-    private val secondsDefault = 500
+    private val secondsDefault = 60
     private val seconds: Int by option(help = "Seconds that we should simulate. Default $secondsDefault").int().default(secondsDefault)
 
     private val loop: Boolean by option(help = "Loop contours").flag()
