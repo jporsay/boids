@@ -4,9 +4,9 @@ import ar.edu.itba.ss.Simulation
 import ar.edu.itba.ss.io.OriginStartBoundaryProvider
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.io.UniverseImporter
-import ar.edu.itba.ss.rules.AvoidBoid
+import ar.edu.itba.ss.rules.Separation
+import ar.edu.itba.ss.rules.Cohesion
 import ar.edu.itba.ss.rules.Boundary
-import ar.edu.itba.ss.rules.CenterOfMass
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -41,8 +41,8 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
-            CenterOfMass(100.0),
-            AvoidBoid(0.2),
+            Cohesion(100.0),
+            Separation(0.2),
             Boundary()
         ), dT, limitSpeed, maxSpeed)
         UniverseExporter(outputPath, boundaryProvider = OriginStartBoundaryProvider()).use { exporter ->
