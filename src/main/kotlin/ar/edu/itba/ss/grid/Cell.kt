@@ -4,7 +4,7 @@ import ar.edu.itba.ss.model.Entity
 
 class Cell {
     private val entities: ArrayList<Entity> = arrayListOf()
-    private val neighbours: ArrayList<Cell> = arrayListOf()
+    private val neighbours: MutableSet<Cell> = mutableSetOf()
 
     fun addNeighbour(cell: Cell) {
         neighbours.add(cell)
@@ -17,4 +17,5 @@ class Cell {
     fun getNear(entity: Entity, distance: Double): List<Entity> {
         return entities.filter { (it.position.distance(entity.position) <= distance) && (it.id != entity.id) }
     }
+
 }

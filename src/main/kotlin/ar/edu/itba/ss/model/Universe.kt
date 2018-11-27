@@ -1,21 +1,12 @@
 package ar.edu.itba.ss.model
-
 import ar.edu.itba.ss.grid.Grid
 import java.lang.StringBuilder
-import kotlin.math.roundToInt
 
 class Universe(
     val metadata: UniverseMetadata,
     val entities: List<Entity>
 ) {
-    private val grid: Grid = Grid(
-        width = (metadata.width / metadata.interactionDistance).roundToInt(),
-        height = (metadata.height / metadata.interactionDistance).roundToInt(),
-        depth = (metadata.depth / metadata.interactionDistance).roundToInt(),
-        cellSide = metadata.interactionDistance,
-        loopContour = metadata.loopContour,
-        entities = entities
-    )
+    private val grid: Grid = Grid.newGrid(metadata, entities = entities)
 
     fun getNear(entity: Entity): List<Entity> {
         return grid.cellFor(entity).getNear(entity, metadata.interactionDistance)

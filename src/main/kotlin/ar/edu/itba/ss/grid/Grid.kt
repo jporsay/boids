@@ -1,65 +1,52 @@
-package ar.edu.itba.ss.grid
+package ar.edu.itba.ss.grid;
 
 import ar.edu.itba.ss.model.Entity
-import java.lang.Math.floor
+import ar.edu.itba.ss.model.UniverseMetadata
+import kotlin.math.roundToInt
 
-class Grid(
-    private val width: Int,
-    private val height: Int,
-    private val depth: Int,
-    private val cellSide: Double,
-    private val loopContour: Boolean,
-    val entities: List<Entity>
-) {
-    private var cells: Array<Array<Array<Cell>>> = Array(width) { Array(height) { Array(depth) { Cell() } } }
+abstract class Grid(private val universeMetadata: UniverseMetadata, private val entities: List<Entity>) {
+    protected val xCells = (universeMetadata.boundaries.xMax / universeMetadata.interactionDistance).roundToInt()
+    protected val yCells = (universeMetadata.boundaries.yMax / universeMetadata.interactionDistance).roundToInt()
+    protected val zCells = (universeMetadata.boundaries.zMax / universeMetadata.interactionDistance).roundToInt()
+    protected var cells: Array<Array<Array<Cell>>> = Array(xCells) { Array(yCells) { Array(zCells) { Cell() } } }
+
+    private val neighbourCoords = arrayOf(
+        1 to 0 to 0,
+        1 to 1 to 0,
+        1 to -1 to 0,
+        -1 to 0 to 0,
+        -1 to 1 to 0,
+        -1 to -1 to 0,
+        0 to 1 to 0,
+        0 to -1 to 0,
+
+        1 to 0 to 1,
+        1 to 1 to 1,
+        1 to -1 to 1,
+        -1 to 0 to 1,
+        -1 to 1 to 1,
+        -1 to -1 to 1,
+        0 to 0 to 1,
+        0 to 1 to 1,
+        0 to -1 to 1,
+
+        1 to 0 to -1,
+        1 to 1 to -1,
+        1 to -1 to -1,
+        -1 to 0 to -1,
+        -1 to 1 to -1,
+        -1 to -1 to -1,
+        0 to 0 to -1,
+        0 to 1 to -1,
+        0 to -1 to -1
+    )
 
     init {
         initNeighbours()
         initEntities()
     }
 
-    private fun initEntities() {
-        entities.forEach { cellFor(it).add(it) }
-    }
-
-    fun cellFor(entity: Entity): Cell {
-        val x = floor(entity.position.x / cellSide).toInt()
-        val y = floor(entity.position.y / cellSide).toInt()
-        val z = floor(entity.position.z / cellSide).toInt()
-        return this[x, y, z]
-    }
-
     private fun initNeighbours() {
-        val neighbourCoords = arrayOf(
-            1 to 0 to 0,
-            1 to 1 to 0,
-            1 to -1 to 0,
-            -1 to 0 to 0,
-            -1 to 1 to 0,
-            -1 to -1 to 0,
-            0 to 1 to 0,
-            0 to -1 to 0,
-
-            1 to 0 to 1,
-            1 to 1 to 1,
-            1 to -1 to 1,
-            -1 to 0 to 1,
-            -1 to 1 to 1,
-            -1 to -1 to 1,
-            0 to 0 to 1,
-            0 to 1 to 1,
-            0 to -1 to 1,
-
-            1 to 0 to -1,
-            1 to 1 to -1,
-            1 to -1 to -1,
-            -1 to 0 to -1,
-            -1 to 1 to -1,
-            -1 to -1 to -1,
-            0 to 0 to -1,
-            0 to 1 to -1,
-            0 to -1 to -1
-        )
         cells.forEachIndexed { x, xArray ->
             xArray.forEachIndexed { y, yArray ->
                 yArray.forEachIndexed { z, cell ->
@@ -67,47 +54,34 @@ class Grid(
                         val xDiff = it.first.first + x
                         val yDiff = it.first.second + y
                         val zDiff = it.second + z
-                        if (isValidCoordinate(xDiff, yDiff, zDiff)) {
-                            cell.addNeighbour(this[xDiff, yDiff, zDiff])
-                        }
+                        addCellNeighbour(cell, xDiff, yDiff, zDiff)
                     }
                 }
             }
         }
     }
 
-    operator fun get(x: Int, y: Int, z: Int): Cell {
-        assertValidCoordinate(x, y, z)
-        return cells[mapX(x)][mapY(y)][mapZ(z)]
+    abstract fun addCellNeighbour(cell: Cell, newX : Int, newY : Int, newZ: Int)
+
+    private fun initEntities() {
+        entities.forEach { cellFor(it).add(it) }
     }
 
-    private fun isValidCoordinate(x: Int, y: Int, z: Int): Boolean {
-        return loopContour || !((x < 0 || x >= width) || (y < 0 || y >= height) || (z < 0 || z >= depth))
+    fun cellFor(entity: Entity): Cell {
+        val x = Math.floor(entity.position.x / universeMetadata.interactionDistance).toInt()
+        val y = Math.floor(entity.position.y / universeMetadata.interactionDistance).toInt()
+        val z = Math.floor(entity.position.z / universeMetadata.interactionDistance).toInt()
+        return this[x, y, z]
     }
 
-    private fun assertValidCoordinate(x: Int, y: Int, z: Int) {
-        if (isValidCoordinate(x, y, z)) return
-        throw IllegalArgumentException("Illegal coordinate: [$x, $y, $z]")
-    }
+    abstract operator fun get(x: Int, y: Int, z: Int): Cell
 
-    private fun mapX(x: Int): Int {
-        return mapAxis(x, width)
-    }
-
-    private fun mapY(y: Int): Int {
-        return mapAxis(y, height)
-    }
-
-    private fun mapZ(z: Int): Int {
-        return mapAxis(z, depth)
-    }
-
-    private fun mapAxis(axis: Int, cap: Int): Int {
-        if (!loopContour) {
-            return axis
+    companion object {
+        fun newGrid(universeMetadata: UniverseMetadata, entities: List<Entity>) : Grid {
+            return if (universeMetadata.loopContour)
+                LoopGrid(universeMetadata, entities)
+            else
+                ContourGrid(universeMetadata, entities)
         }
-        val modAxis = axis % cap
-        return if (modAxis >= 0) modAxis else modAxis + cap
     }
-
 }
