@@ -2,29 +2,21 @@ package ar.edu.itba.ss.model
 
 class UniverseMetadata(
     val age: Double,
-    val width: Double,
-    val height: Double,
-    val depth: Double,
     val loopContour: Boolean = true,
-    val interactionDistance: Double
+    val interactionDistance: Double,
+    val boundaries: Boundaries
 ) {
 
-    fun toXYZ(): String = "age=$age\twidth=$width\theight=$height\tdepth=$depth\tloop=$loopContour\tintdis=$interactionDistance"
+    fun toXYZ(): String = "age=$age\twidth=${boundaries.xMax}\theight=${boundaries.yMax}\tdepth=${boundaries.zMax}\tloop=$loopContour\tintdis=$interactionDistance"
 
-    class Builder() {
+    class Builder(var boundaries: Boundaries) {
 
         var age: Double = 0.0
-        var width: Double = 20.0
-        var height: Double = 20.0
-        var depth: Double = 20.0
         var loopContour: Boolean = true
         var interactionDistance: Double = 1.0
 
-        constructor(from: UniverseMetadata): this() {
+        constructor(from: UniverseMetadata): this(from.boundaries) {
             age = from.age
-            width = from.width
-            height = from.height
-            depth = from.depth
             loopContour = from.loopContour
             interactionDistance = from.interactionDistance
         }
@@ -35,11 +27,12 @@ class UniverseMetadata(
                     val sp = it.split("=")
                     sp[0] to sp[1]
                 }.toMap()
-                val out = UniverseMetadata.Builder()
+                val out = UniverseMetadata.Builder(Boundaries(
+                    kv["width"]!!.toDouble(),
+                    kv["height"]!!.toDouble(),
+                    kv["depth"]!!.toDouble()
+                ))
                 out.age = kv["age"]!!.toDouble()
-                out.width = kv["width"]!!.toDouble()
-                out.height = kv["height"]!!.toDouble()
-                out.depth = kv["depth"]!!.toDouble()
                 out.loopContour = kv["loop"]!!.toBoolean()
                 out.interactionDistance = kv["intdis"]!!.toDouble()
                 return out
@@ -47,8 +40,18 @@ class UniverseMetadata(
         }
 
         fun build(): UniverseMetadata = UniverseMetadata(
-            age, width, height, depth, loopContour, interactionDistance
+            age, loopContour, interactionDistance, boundaries
         )
     }
 
+}
+
+// TODO: should be zero centered. xMax = width/2 and xMin = -xMax. Idem y, z.
+class Boundaries(width: Double, height: Double, depth: Double) {
+    val xMax = width
+    val xMin = 0.0
+    val yMax = height
+    val yMin = 0.0
+    val zMax = depth
+    val zMin = 0.0
 }

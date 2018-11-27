@@ -1,7 +1,6 @@
 package ar.edu.itba.ss.command
 
 import ar.edu.itba.ss.Simulation
-import ar.edu.itba.ss.io.OriginStartBoundaryProvider
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.io.UniverseImporter
 import ar.edu.itba.ss.rules.Separation
@@ -43,9 +42,9 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val simulation = Simulation(universe, listOf(
             Cohesion(100.0),
             Separation(0.2),
-            Boundary()
+            Boundary(2.0)
         ), dT, limitSpeed, maxSpeed)
-        UniverseExporter(outputPath, boundaryProvider = OriginStartBoundaryProvider()).use { exporter ->
+        UniverseExporter(outputPath).use { exporter ->
             exporter.write(universe)
             for (frame in 1..(seconds * fps)) {
                 exporter.write(simulation.step())

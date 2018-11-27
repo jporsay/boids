@@ -14,9 +14,9 @@ class UniverseImporter(inputPath: String) : Iterator<Universe.Builder> {
     override fun hasNext(): Boolean = buffer.ready()
 
     override fun next(): Universe.Builder {
-        val builder = Universe.Builder()
+
         var entityCount = parseInt(nextLine(), "Invalid particle count. Got %s")
-        builder.metadata = UniverseMetadata.Builder.fromXYZ(nextLine())
+        val builder = Universe.Builder(UniverseMetadata.Builder.fromXYZ(nextLine()))
         var entitiesParsed = 0
         val entities = ArrayList<Entity>(entityCount)
         while (entitiesParsed < entityCount) {

@@ -4,7 +4,7 @@ import ar.edu.itba.ss.model.Universe
 import java.io.*
 import java.util.zip.GZIPOutputStream
 
-class UniverseExporter(private val outputPath: String, compressed: Boolean = false, append: Boolean = false, private val flushFrequency: Int = 100, private val boundaryProvider: BoundaryProvider = NoopBoundaryProvider()) : Closeable {
+class UniverseExporter(private val outputPath: String, compressed: Boolean = false, append: Boolean = false, private val flushFrequency: Int = 100) : Closeable {
 
     private val writer: PrintWriter by lazy {
         val outputStreamWriter = if (compressed) OutputStreamWriter(GZIPOutputStream(FileOutputStream(File("$outputPath.gz"), append))) else FileWriter(outputPath, append)
@@ -24,7 +24,6 @@ class UniverseExporter(private val outputPath: String, compressed: Boolean = fal
         frames.forEach {
             val builder = Universe.Builder(it)
             val entities = builder.entities.toMutableList()
-            entities.addAll(boundaryProvider.getFor(it))
             builder.entities = entities
             writer.print(builder.build().toXYZ())
         }

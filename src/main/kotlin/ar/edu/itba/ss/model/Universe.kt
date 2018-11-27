@@ -26,15 +26,12 @@ class Universe(
         return ss.toString()
     }
 
-    class Builder() {
-        var metadata: UniverseMetadata.Builder = UniverseMetadata.Builder()
+    class Builder(var metadata : UniverseMetadata.Builder) {
         var entities: List<Entity> = ArrayList()
 
-        constructor(from: Universe): this() {
-            metadata = UniverseMetadata.Builder(from.metadata)
+        constructor(from: Universe): this(UniverseMetadata.Builder(from.metadata)) {
             entities = from.entities
         }
-
         fun build(): Universe = Universe(
             metadata.build(), entities
         )
