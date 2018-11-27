@@ -26,7 +26,7 @@ class Simulation(
             val position = entity.position + velocity * dT
             val builder = Entity.Builder(entity)
             builder.velocity = velocity
-            builder.position = clampPosition(position)
+            builder.position = if (universe.metadata.loopContour) warpPosition(position) else position
             builder.build()
         }
         universe = universeBuilder.build()
@@ -39,11 +39,12 @@ class Simulation(
         return velocity.normalize() * maxSpeed
     }
 
-    private fun clampPosition(position: Vector3D): Vector3D = Vector3D(
-        clampValue(position.x, universe.metadata.width),
-        clampValue(position.y, universe.metadata.height),
-        clampValue(position.z, universe.metadata.depth)
+    private fun warpPosition(position: Vector3D): Vector3D = Vector3D(
+        warpValue(position.x, universe.metadata.boundaries.xMax),
+        warpValue(position.y, universe.metadata.boundaries.yMax),
+        warpValue(position.z, universe.metadata.boundaries.zMax)
     )
 
-    private fun clampValue(value: Double, max: Double): Double = (value % max + max) % max
+    // TODO: shoud use min too.
+    private fun warpValue(value: Double, max: Double): Double = (value % max + max) % max
 }
