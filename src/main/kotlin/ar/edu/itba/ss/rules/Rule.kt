@@ -6,13 +6,13 @@ import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
 abstract class Rule {
-    fun apply(entity: Entity, universe: Universe): Vector3D {
+    fun apply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D {
         if (!appliesTo(entity.type)) return Vector3D.ZERO
 
-        return doApply(entity, universe)
+        return doApply(entity, neighbors, universe)
     }
 
     protected abstract fun appliesTo(type: Type): Boolean
 
-    protected abstract fun doApply(entity: Entity, universe: Universe): Vector3D
+    protected abstract fun doApply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D
 }

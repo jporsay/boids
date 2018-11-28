@@ -6,12 +6,12 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-class Separation(private val distance: Double): FlockRule() {
+class Separation: FlockRule() {
 
     override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
-    override fun doApply(entity: Entity, universe: Universe): Vector3D {
-        val neighbours = filterNeighbours(entity, universe.getNear(entity, distance))
+    override fun doApply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D {
+        val neighbours = filterNeighbours(entity, neighbors)
         if (neighbours.isEmpty()) return Vector3D.ZERO
 
         var out = Vector3D.ZERO

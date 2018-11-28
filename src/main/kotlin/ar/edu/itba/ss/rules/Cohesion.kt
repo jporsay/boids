@@ -11,9 +11,8 @@ class Cohesion(private val factor: Double) : FlockRule() {
 
     override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
-    override fun doApply(entity: Entity, universe: Universe): Vector3D {
-
-        val neighbours = filterNeighbours(entity, universe.getNear(entity))
+    override fun doApply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D {
+        val neighbours = filterNeighbours(entity, neighbors)
         if (neighbours.isEmpty()) return Vector3D.ZERO
 
         val centerOfMass = neighbours.map { it.position }.reduce { acc, vector3D -> acc + vector3D } / neighbours.size

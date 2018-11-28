@@ -9,7 +9,7 @@ class Boundary(private val speed: Double): Rule() {
 
     override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
-    override fun doApply(entity: Entity, universe: Universe): Vector3D {
+    override fun doApply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D {
 
         var vx = 0.0
         if (entity.position.x < universe.metadata.boundaries.xMin) {

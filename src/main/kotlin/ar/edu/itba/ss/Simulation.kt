@@ -18,9 +18,11 @@ class Simulation(
     fun step(): Universe {
         val universeBuilder = Universe.Builder(universe)
         universeBuilder.entities = universe.entities.map { entity ->
+
+            val neighbours = universe.getNear(entity)
             var velocity = entity.velocity
             rules.forEach {
-                velocity = velocity.add(it.apply(entity, universe))
+                velocity = velocity.add(it.apply(entity, neighbours, universe))
             }
             velocity = clampVelocity(velocity)
             val position = entity.position + velocity * dT

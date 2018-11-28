@@ -41,7 +41,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
             Cohesion(100.0),
-            Separation(0.2),
+            Separation(),
             Boundary(2.0)
         ), dT, limitSpeed, maxSpeed)
         UniverseExporter(outputPath).use { exporter ->
