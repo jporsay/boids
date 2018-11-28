@@ -25,7 +25,7 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
 
     class Builder() {
         var id: Int = 0
-        var type: Type = Type.None
+        var type: Type = Type.Boid
         var radius: Double = 0.0
         var position: Vector3D = Vector3D.ZERO
         var velocity: Vector3D = Vector3D.ZERO
@@ -46,7 +46,6 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
                 val out = Builder()
                 out.id = parts[0].toInt()
                 out.type = Type.fromInt(parts[1].toInt())
-                if (out.id >= 0 && out.type == Type.None) throw IllegalArgumentException("Error parsing line. Entity can't be none:\n\t$line")
                 out.radius = parts[2].toDouble()
                 out.position = Vector3D(parts[3].toDouble(), parts[4].toDouble(), parts[5].toDouble())
                 out.velocity = Vector3D(parts[6].toDouble(), parts[7].toDouble(), parts[8].toDouble())
@@ -56,6 +55,3 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
     }
 
 }
-class Boid(id: Int, radius: Double, position: Vector3D, velocity: Vector3D) : Entity(id, Type.Boid, radius, position, velocity)
-class Predator(id: Int, radius: Double, position: Vector3D, velocity: Vector3D) : Entity(id, Type.Predator, radius, position, velocity)
-class Boundary(position: Vector3D) : Entity(-1, Type.None, 0.000001, position, Vector3D.ZERO)

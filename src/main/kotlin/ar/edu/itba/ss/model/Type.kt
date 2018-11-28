@@ -1,9 +1,8 @@
 package ar.edu.itba.ss.model
 
-enum class Type {
-    None,
-    Boid,
-    Predator;
+enum class Type(val maxSpeed: Double) {
+    Boid(5.0),
+    Predator(7.0);
 
     companion object {
         private val map = Type.values().associateBy(Type::ordinal)

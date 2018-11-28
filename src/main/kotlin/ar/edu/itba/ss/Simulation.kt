@@ -10,9 +10,7 @@ import kotlin.streams.toList
 class Simulation(
     var universe: Universe,
     private val rules: List<Rule>,
-    private val dT: Double,
-    val limitSpeed: Boolean,
-    val maxSpeed: Double
+    private val dT: Double
 ) {
 
     // http://www.kfish.org/boids/pseudocode.html
@@ -25,7 +23,7 @@ class Simulation(
             rules.forEach {
                 velocity = velocity.add(it.apply(entity, neighbours, universe))
             }
-            velocity = clampVelocity(velocity)
+            velocity = clampVelocity(velocity, entity.type.maxSpeed)
             val position = entity.position + velocity * dT
             val builder = Entity.Builder(entity)
             builder.velocity = velocity
@@ -36,8 +34,7 @@ class Simulation(
         return universe
     }
 
-    private fun clampVelocity(velocity: Vector3D): Vector3D {
-        if (!limitSpeed) return velocity
+    private fun clampVelocity(velocity: Vector3D, maxSpeed: Double): Vector3D {
         if (velocity.norm <= maxSpeed) return velocity
         return velocity.normalize() * maxSpeed
     }

@@ -5,7 +5,7 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.utils.SeededRandom
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-open class EntityGenerator(val idProvider: IdProvider, val type: Type, val radius: Double, val speed: Double, val amount: Int, val universeWidth: Double, val universeHeight: Double, val universeDepth: Double) {
+open class EntityGenerator(val idProvider: IdProvider, val type: Type, val radius: Double, val amount: Int, val universeWidth: Double, val universeHeight: Double, val universeDepth: Double) {
 
     fun generate() : List<Entity> {
         val out = ArrayList<Entity>(amount)
@@ -16,17 +16,14 @@ open class EntityGenerator(val idProvider: IdProvider, val type: Type, val radiu
     }
 
     private fun genVelocity() = Vector3D(
-        speed,
-        Vector3D(
-            SeededRandom.random(),
-            SeededRandom.random(),
-            SeededRandom.random()
-        ).normalize()
-    )
+        SeededRandom.random(-type.maxSpeed, type.maxSpeed),
+        SeededRandom.random(-type.maxSpeed, type.maxSpeed),
+        SeededRandom.random(-type.maxSpeed, type.maxSpeed)
+    ).normalize()
 
     private fun genPosition() = Vector3D(
-        SeededRandom.random() * universeWidth,
-        SeededRandom.random() * universeHeight,
-        SeededRandom.random() * universeDepth
+        SeededRandom.random(0.0, universeWidth),
+        SeededRandom.random(0.0, universeHeight),
+        SeededRandom.random(0.0, universeDepth)
     )
 }

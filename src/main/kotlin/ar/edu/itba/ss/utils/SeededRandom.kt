@@ -12,4 +12,10 @@ object SeededRandom {
 
     fun random(): Double = generator.nextDouble()
     fun randomInt(): Int = generator.nextInt()
+
+    fun random(fromInclusive: Double, toInclusive: Double): Double {
+        val diff = toInclusive - fromInclusive
+        val r = random() * diff
+        return fromInclusive + r
+    }
 }

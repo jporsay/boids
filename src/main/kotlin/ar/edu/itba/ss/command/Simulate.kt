@@ -30,11 +30,6 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private val outputPathDefault = "universe.sim.xyz"
     private val outputPath: String by option(help = "Simulation output file. Default '$outputPathDefault'").default(outputPathDefault)
 
-    private val limitSpeed: Boolean by option(help = "Enable boid speed limit").flag()
-
-    private val maxSpeedDefault = 20.0
-    private val maxSpeed: Double by option(help = "Maximum void speed. Default '$maxSpeedDefault'").double().default(maxSpeedDefault)
-
     override fun run() {
         val builder = UniverseImporter(inputPath).next()
         builder.metadata.loopContour = loop
