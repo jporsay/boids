@@ -12,6 +12,7 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.int
+import me.tongfei.progressbar.ProgressBar
 
 class Simulate : CliktCommand(help = "Simulate a given universe") {
 
@@ -45,8 +46,9 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
             Boundary(maxSpeed/2)
         ), dT, limitSpeed, maxSpeed)
         UniverseExporter(outputPath).use { exporter ->
+            val time = (1..(seconds * fps)).toList()
             exporter.write(universe)
-            for (frame in 1..(seconds * fps)) {
+            for (frame in ProgressBar.wrap(time, "Simulating")) {
                 exporter.write(simulation.step())
             }
         }
