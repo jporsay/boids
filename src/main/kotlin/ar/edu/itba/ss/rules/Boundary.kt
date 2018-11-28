@@ -5,12 +5,12 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-class Boundary(private val speed: Double): Rule() {
+class Boundary(private val escapeSpeedFactor: Double): Rule() {
 
-    override fun appliesTo(type: Type): Boolean = type == Type.Boid
+    override fun appliesTo(type: Type): Boolean = true
 
-    override fun doApply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D {
-
+    override fun doApply(entity: Entity, neighbours: List<Entity>, universe: Universe): Vector3D {
+        val speed = escapeSpeedFactor * entity.type.maxSpeed
         var vx = 0.0
         if (entity.position.x < universe.metadata.boundaries.xMin) {
             vx = speed

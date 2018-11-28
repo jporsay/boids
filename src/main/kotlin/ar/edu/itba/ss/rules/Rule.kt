@@ -14,5 +14,5 @@ abstract class Rule {
 
     protected abstract fun appliesTo(type: Type): Boolean
 
-    protected abstract fun doApply(entity: Entity, neighbors: List<Entity>, universe: Universe): Vector3D
+    protected abstract fun doApply(entity: Entity, neighbours: List<Entity>, universe: Universe): Vector3D
 }

@@ -3,14 +3,11 @@ package ar.edu.itba.ss.command
 import ar.edu.itba.ss.Simulation
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.io.UniverseImporter
-import ar.edu.itba.ss.rules.Separation
-import ar.edu.itba.ss.rules.Cohesion
-import ar.edu.itba.ss.rules.Boundary
+import ar.edu.itba.ss.rules.*
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.int
 import me.tongfei.progressbar.ProgressBar
 
@@ -33,13 +30,16 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     override fun run() {
         val builder = UniverseImporter(inputPath).next()
         builder.metadata.loopContour = loop
+        builder.metadata.interactionDistance = 2.0
         val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
+            Alignment(8.0),
             Cohesion(100.0),
-            Separation(),
-            Boundary(maxSpeed/2)
-        ), dT, limitSpeed, maxSpeed)
+            Separation(0.5),
+            AvoidPredators(0.8),
+            Boundary(0.2)
+        ), dT)
         UniverseExporter(outputPath).use { exporter ->
             val time = (1..(seconds * fps)).toList()
             exporter.write(universe)

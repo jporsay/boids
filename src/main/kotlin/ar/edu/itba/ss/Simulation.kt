@@ -19,9 +19,8 @@ class Simulation(
         universeBuilder.entities = universe.entities.parallelStream().map { entity ->
 
             val neighbours = universe.getNear(entity)
-            var velocity = entity.velocity
-            rules.forEach {
-                velocity = velocity.add(it.apply(entity, neighbours, universe))
+            var velocity = rules.fold(entity.velocity) {acc, rule ->
+                acc.add(rule.apply(entity, neighbours, universe))
             }
             velocity = clampVelocity(velocity, entity.type.maxSpeed)
             val position = entity.position + velocity * dT
