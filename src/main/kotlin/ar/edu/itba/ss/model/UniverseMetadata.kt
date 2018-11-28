@@ -7,7 +7,7 @@ class UniverseMetadata(
     val boundaries: Boundaries
 ) {
 
-    fun toXYZ(): String = "age=$age\twidth=${boundaries.xMax}\theight=${boundaries.yMax}\tdepth=${boundaries.zMax}\tloop=$loopContour\tintdis=$interactionDistance"
+    fun toXYZ(): String = "age=$age\twidth=${boundaries.xMax}\theight=${boundaries.yMax}\tdepth=${boundaries.zMax}"
 
     class Builder(var boundaries: Boundaries) {
 
@@ -33,8 +33,6 @@ class UniverseMetadata(
                     kv["depth"]!!.toDouble()
                 ))
                 out.age = kv["age"]!!.toDouble()
-                out.loopContour = kv["loop"]!!.toBoolean()
-                out.interactionDistance = kv["intdis"]!!.toDouble()
                 return out
             }
         }
