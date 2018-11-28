@@ -42,7 +42,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val simulation = Simulation(universe, listOf(
             Cohesion(100.0),
             Separation(),
-            Boundary(2.0)
+            Boundary(maxSpeed/2)
         ), dT, limitSpeed, maxSpeed)
         UniverseExporter(outputPath).use { exporter ->
             exporter.write(universe)
