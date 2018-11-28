@@ -2,26 +2,27 @@ package ar.edu.itba.ss.grid
 
 import ar.edu.itba.ss.model.Entity
 import ar.edu.itba.ss.model.UniverseMetadata
+import kotlin.math.max
+import kotlin.math.min
 
-class ContourGrid(universeMetadata: UniverseMetadata, entities: List<Entity>): Grid(universeMetadata, entities) {
-
-    override fun addCellNeighbour(cell: Cell, newX : Int, newY : Int, newZ: Int) {
-        if (isValidCoordinate(newX, newY, newZ)) {
-            cell.addNeighbour(this[newX, newY, newZ])
-        } else {
-            cell.addNeighbour(voidCell)
-        }
-    }
+class ContourGrid(universeMetadata: UniverseMetadata, entities: List<Entity>)
+    : Grid(
+    1 + cellCountToDivideUniverse + 1,
+        universeMetadata.boundaries.xMax / cellCountToDivideUniverse,
+        universeMetadata.boundaries.yMax / cellCountToDivideUniverse,
+        universeMetadata.boundaries.zMax / cellCountToDivideUniverse,
+        entities
+    ) {
 
     override operator fun get(x: Int, y: Int, z: Int): Cell {
-        return if (isValidCoordinate(x, y, z)) cells[x][y][z] else voidCell
-    }
-
-    private fun isValidCoordinate(x: Int, y: Int, z: Int): Boolean {
-        return !((x < 0 || x >= xCells) || (y < 0 || y >= yCells) || (z < 0 || z >= zCells))
+        val xCoord = min(max(x+1, 0), cellSideCount - 1)
+        val yCoord = min(max(y+1, 0), cellSideCount - 1)
+        val zCoord = min(max(z+1, 0), cellSideCount - 1)
+        return cells[xCoord][yCoord][zCoord]
     }
 
     companion object {
-        private val voidCell: Cell by lazy { Cell() }
+        private const val cellCountToDivideUniverse = 6
     }
+
 }

@@ -4,9 +4,10 @@ import ar.edu.itba.ss.model.Entity
 
 class Cell {
     private val entities: ArrayList<Entity> = arrayListOf()
-    private val neighbours: MutableSet<Cell> = mutableSetOf()
+    private val neighbours: ArrayList<Cell> = arrayListOf()
 
     fun addNeighbour(cell: Cell) {
+        if (cell == this) return
         neighbours.add(cell)
     }
 
