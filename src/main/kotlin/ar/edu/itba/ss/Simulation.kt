@@ -5,6 +5,7 @@ import ar.edu.itba.ss.model.Entity
 import ar.edu.itba.ss.model.Universe
 import ar.edu.itba.ss.rules.Rule
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
+import kotlin.streams.toList
 
 class Simulation(
     var universe: Universe,
@@ -17,7 +18,7 @@ class Simulation(
     // http://www.kfish.org/boids/pseudocode.html
     fun step(): Universe {
         val universeBuilder = Universe.Builder(universe)
-        universeBuilder.entities = universe.entities.map { entity ->
+        universeBuilder.entities = universe.entities.parallelStream().map { entity ->
 
             val neighbours = universe.getNear(entity)
             var velocity = entity.velocity
@@ -30,7 +31,7 @@ class Simulation(
             builder.velocity = velocity
             builder.position = if (universe.metadata.loopContour) warpPosition(position) else position
             builder.build()
-        }
+        }.toList()
         universe = universeBuilder.build()
         return universe
     }
