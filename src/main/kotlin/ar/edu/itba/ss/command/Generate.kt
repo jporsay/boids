@@ -18,7 +18,7 @@ class Generate : CliktCommand(help = "Generate a universe") {
     private val boidsDefault = 500
     private val boids: Int by option(help = "Amount of boids to generate. Default $boidsDefault").int().default(boidsDefault)
 
-    private val predatorsDefault = 5
+    private val predatorsDefault = 0
     private val predators: Int by option(help = "Amount of predators to generate. Default $predatorsDefault").int().default(predatorsDefault)
 
     private val widthDefault = 20.0
