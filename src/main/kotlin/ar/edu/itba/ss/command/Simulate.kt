@@ -34,9 +34,9 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
-            Alignment(8.0),
-            Cohesion(100.0),
-            Separation(0.5),
+            Alignment(0.2),
+            Cohesion(0.01),
+            Separation(0.5,0.5),
             AvoidPredators(0.8),
             Boundary(0.2)
         ), dT)

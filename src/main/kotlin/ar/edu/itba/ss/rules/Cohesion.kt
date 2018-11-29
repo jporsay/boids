@@ -14,6 +14,6 @@ class Cohesion(private val factor: Double) : FlockRule() {
             .fold(Vector3D.ZERO) { acc, boid -> acc + boid.position}
             .div(boidsAtSight.size)
             .minus(entity.position)
-            .div(factor)
+            .scalarMultiply(factor)
     }
 }

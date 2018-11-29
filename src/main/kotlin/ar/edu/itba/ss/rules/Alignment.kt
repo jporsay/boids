@@ -13,6 +13,6 @@ class Alignment(private val factor: Double) : FlockRule() {
             .fold(Vector3D.ZERO) { acc, boid -> acc + boid.velocity}
             .div(boidsAtSight.size)
             .subtract(entity.velocity)
-            .div(factor)
+            .scalarMultiply(factor)
     }
 }

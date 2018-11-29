@@ -5,7 +5,7 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-class AvoidPredators(private val escapeFactor: Double): Rule() {
+class AvoidPredators(private val escapeSpeedFactor: Double): Rule() {
 
     override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
@@ -17,6 +17,6 @@ class AvoidPredators(private val escapeFactor: Double): Rule() {
                     .subtract(entity.position)
                     .scalarMultiply(1.0/100)
             )}
-            .scalarMultiply(- escapeFactor * entity.type.maxSpeed)
+            .scalarMultiply(- escapeSpeedFactor * entity.type.maxSpeed)
     }
 }
