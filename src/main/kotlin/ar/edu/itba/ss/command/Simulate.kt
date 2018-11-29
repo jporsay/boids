@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.int
 import me.tongfei.progressbar.ProgressBar
 
@@ -21,6 +22,9 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private val fpsDefault = 60
     private val fps: Int by option(help = "Simulation frames per second. Default $fpsDefault").int().default(fpsDefault)
 
+    private val distanceDefault = 2.0
+    private val distance: Double by option(help = "Simulation frames per second. Default $distanceDefault").double().default(distanceDefault)
+
     private val inputPathDefault = "universe.xyz"
     private val inputPath: String by option(help = "Simulation input file. Default '$inputPathDefault'").default(inputPathDefault)
 
@@ -30,7 +34,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     override fun run() {
         val builder = UniverseImporter(inputPath).next()
         builder.metadata.loopContour = loop
-        builder.metadata.interactionDistance = 2.0
+        builder.metadata.interactionDistance = distance
         val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
