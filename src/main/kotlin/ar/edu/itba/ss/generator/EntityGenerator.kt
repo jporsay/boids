@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.generator
 
+import ar.edu.itba.ss.extensions.times
 import ar.edu.itba.ss.model.Entity
 import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.utils.SeededRandom
@@ -16,10 +17,10 @@ open class EntityGenerator(val idProvider: IdProvider, val type: Type, val radiu
     }
 
     private fun genVelocity() = Vector3D(
-        SeededRandom.random(-type.maxSpeed, type.maxSpeed),
-        SeededRandom.random(-type.maxSpeed, type.maxSpeed),
-        SeededRandom.random(-type.maxSpeed, type.maxSpeed)
-    ).normalize()
+        SeededRandom.random(-1.0, 1.0),
+        SeededRandom.random(-1.0, 1.0),
+        SeededRandom.random(-1.0, 1.0)
+    ).normalize() * SeededRandom.random(1.0, type.maxSpeed)
 
     private fun genPosition() = Vector3D(
         SeededRandom.random(0.0, universeWidth),
