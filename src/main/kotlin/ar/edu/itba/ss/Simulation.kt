@@ -29,6 +29,7 @@ class Simulation(
             builder.position = if (universe.metadata.loopContour) warpPosition(position) else position
             builder.build()
         }.toList()
+        universeBuilder.metadata.age += dT
         universe = universeBuilder.build()
         return universe
     }
