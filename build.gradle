@@ -29,6 +29,7 @@ dependencies {
 
     compile 'org.knowm.xchart:xchart:3.5.2'
     compile 'org.jzy3d:jzy3d-api:1.0.2'
+    compile 'org.jzy3d:jzy3d-javafx:1.0.2'
     compile 'org.jzy3d:jzy3d-tools-libsvm:1.0.2'
     compile 'org.jzy3d:jzy3d-svm-mapper:1.0.2'
 }
