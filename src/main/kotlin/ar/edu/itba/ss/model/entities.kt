@@ -4,6 +4,7 @@ import ar.edu.itba.ss.extensions.toXYZ
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.sqrt
 
 open class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
@@ -45,6 +46,10 @@ open class Entity(val id: Int, val type: Type, val radius: Double, val position:
         ret *= sqrt(1.0 - xabs)
         ret -= 2 * negate * ret
         return negate * 3.14159265358979 + ret
+    }
+
+    fun distance(entity: Entity): Double {
+        return max(0.0, position.distance(entity.position) - entity.radius - radius)
     }
 
     class Builder() {

@@ -9,7 +9,7 @@ class Separation(private val factor: Double, private val distance: Double): Floc
 
     override fun applyToBoid(entity: Entity, boidsAtSight: List<Entity>, universe: Universe): Vector3D {
         return boidsAtSight
-            .filter { entity.position.distance(it.position) < distance }
+            .filter { entity.distance(it) < distance }
             .fold(Vector3D.ZERO) {acc, boid -> acc.minus(boid.position.minus(entity.position))}
             .scalarMultiply(factor)
     }
