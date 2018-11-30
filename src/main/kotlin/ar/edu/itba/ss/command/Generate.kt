@@ -7,11 +7,13 @@ import ar.edu.itba.ss.model.Universe
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.model.Boundaries
 import ar.edu.itba.ss.model.UniverseMetadata
+import ar.edu.itba.ss.utils.SeededRandom
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.int
+import kotlin.math.absoluteValue
 
 class Generate : CliktCommand(help = "Generate a universe") {
 
@@ -30,16 +32,23 @@ class Generate : CliktCommand(help = "Generate a universe") {
     private val depthDefault = 20.0
     private val depth: Double by option(help = "Depth of the simulation area. Default $depthDefault").double().default(depthDefault)
 
-    private val outputPathDefault = "universe.xyz"
-    private val outputPath: String by option(help = "Where the output file will be written to. Default '$outputPathDefault'").default(outputPathDefault)
+    private val amountDefault = 1
+    private val amount: Int by option(help = "Amount of universes to generate. Default $amountDefault").int().default(amountDefault)
 
     override fun run() {
+        (0 until amount).forEach {
+            val id = (SeededRandom.randomInt().absoluteValue % 10000).toString().padStart(4, '0')
+            generateUniverse(id)
+        }
+    }
+
+    private fun generateUniverse(id: String) {
         val idProvider = IdProvider()
         val boidsGenerator = BoidGenerator(idProvider, boids, width, height, depth)
         val predatorGenerator = PredatorGenerator(idProvider, predators, width, height, depth)
         val builder = Universe.Builder(UniverseMetadata.Builder(Boundaries(width, height, depth)))
         builder.entities = boidsGenerator.generate() + predatorGenerator.generate()
-        UniverseExporter(outputPath).use {
+        UniverseExporter("universe__id_$id.xyz").use {
             it.write(builder.build())
         }
     }
