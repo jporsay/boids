@@ -2,6 +2,7 @@ package ar.edu.itba.ss.io
 
 import ar.edu.itba.ss.model.Universe
 import java.io.*
+import java.lang.StringBuilder
 import java.util.zip.GZIPOutputStream
 
 class UniverseExporter(private val outputPath: String, compressed: Boolean = false, append: Boolean = false, private val flushFrequency: Int = 100) : Closeable {
@@ -25,7 +26,7 @@ class UniverseExporter(private val outputPath: String, compressed: Boolean = fal
             val builder = Universe.Builder(it)
             val entities = builder.entities.toMutableList()
             builder.entities = entities
-            writer.print(builder.build().toXYZ())
+            writer.print(builder.build().toXYZ(StringBuilder()))
         }
         frames.clear()
     }

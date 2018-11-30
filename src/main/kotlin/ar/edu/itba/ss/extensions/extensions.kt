@@ -5,9 +5,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-fun Vector3D.toXYZ(): String {
-    return "$x\t$y\t$z"
-}
+fun Vector3D.toXYZ(ss: StringBuilder): StringBuilder = ss
+    .append(x).append('\t')
+    .append(y).append('\t')
+    .append(z)
 
 operator fun Vector3D.times(value: Double): Vector3D = this.scalarMultiply(value)
 operator fun Vector3D.div(value: Double): Vector3D = this.scalarMultiply(1 / value)

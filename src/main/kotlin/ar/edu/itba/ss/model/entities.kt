@@ -2,6 +2,7 @@ package ar.edu.itba.ss.model
 
 import ar.edu.itba.ss.extensions.toXYZ
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
+import java.lang.StringBuilder
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.max
@@ -9,8 +10,13 @@ import kotlin.math.sqrt
 
 open class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
 
-    fun toXYZ(): String {
-        return "$id\t${type.ordinal}\t$radius\t${position.toXYZ()}\t${velocity.toXYZ()}"
+    fun toXYZ(ss: StringBuilder): StringBuilder {
+        ss
+        .append(id).append('\t')
+        .append(type.ordinal).append('\t')
+        .append(radius).append('\t')
+        position.toXYZ(ss).append('\t')
+        return velocity.toXYZ(ss).appendln()
     }
 
     fun sees(other: Entity): Boolean {

@@ -16,14 +16,13 @@ class Universe(
         return grid.cellFor(entity).getNear(entity, searchDistance)
     }
 
-    fun toXYZ(): String {
-        val ss = StringBuilder()
+    fun toXYZ(ss: StringBuilder): StringBuilder {
         ss.appendln(entities.size)
-        ss.appendln(metadata.toXYZ())
+        metadata.toXYZ(ss)
         entities.forEach {
-            ss.appendln(it.toXYZ())
+            it.toXYZ(ss)
         }
-        return ss.toString()
+        return ss
     }
 
     class Builder(var metadata : UniverseMetadata.Builder) {

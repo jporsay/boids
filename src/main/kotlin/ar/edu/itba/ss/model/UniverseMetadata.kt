@@ -1,5 +1,7 @@
 package ar.edu.itba.ss.model
 
+import java.lang.StringBuilder
+
 class UniverseMetadata(
     val age: Double,
     val loopContour: Boolean = true,
@@ -7,7 +9,10 @@ class UniverseMetadata(
     val boundaries: Boundaries
 ) {
 
-    fun toXYZ(): String = "age=$age\twidth=${boundaries.xMax}\theight=${boundaries.yMax}\tdepth=${boundaries.zMax}"
+    fun toXYZ(ss: StringBuilder): StringBuilder {
+        ss.append("age=").append(age).append('\t')
+        return boundaries.toXYZ(ss).appendln()
+    }
 
     class Builder(var boundaries: Boundaries) {
 
@@ -46,6 +51,11 @@ class UniverseMetadata(
 
 // TODO: should be zero centered. xMax = width/2 and xMin = -xMax. Idem y, z.
 class Boundaries(width: Double, height: Double, depth: Double) {
+    fun toXYZ(ss: StringBuilder): StringBuilder = ss
+        .append("width=").append(xMax).append('\t')
+        .append("height=").append(yMax).append('\t')
+        .append("depth=").append(zMax)
+
     val xMax = width
     val xMin = 0.0
     val yMax = height
