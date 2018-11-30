@@ -10,7 +10,10 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.int
+import com.github.ajalt.clikt.parameters.types.long
 import me.tongfei.progressbar.ProgressBar
+import java.io.File
+import java.util.regex.Pattern
 
 class Simulate : CliktCommand(help = "Simulate a given universe") {
 
@@ -25,26 +28,38 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private val distanceDefault = 2.0
     private val distance: Double by option(help = "Simulation frames per second. Default $distanceDefault").double().default(distanceDefault)
 
-    private val inputPathDefault = "universe.xyz"
-    private val inputPath: String by option(help = "Simulation input file. Default '$inputPathDefault'").default(inputPathDefault)
+    private val limitDefault = 100L
+    private val limit: Long by option(help = "Simulation frames per second. Default $fpsDefault").long().default(limitDefault)
 
-    private val outputPathDefault = "universe.sim.xyz"
-    private val outputPath: String by option(help = "Simulation output file. Default '$outputPathDefault'").default(outputPathDefault)
+    private val sourceUniversePattern = Pattern.compile("universe__id_(?<id>\\d{4})\\.xyz")
+
+    private fun universes(path: String = "."): List<File> {
+        return File(path)
+            .walkTopDown()
+            .filter { file -> sourceUniversePattern.matcher(file.name).matches() }
+            .toList()
+    }
 
     override fun run() {
-        val builder = UniverseImporter(inputPath).next()
+        universes().parallelStream().limit(limit).forEach { path ->
+            processUniverse(path.absolutePath)
+        }
+    }
+
+    private fun processUniverse(path: String) {
+        val builder = UniverseImporter(path).next()
         builder.metadata.loopContour = loop
         builder.metadata.interactionDistance = distance
         val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
-            Alignment(0.2),
+            Alignment(0.4),
             Cohesion(0.01),
-            Separation(0.5,0.5),
+            Separation(1.0, 1.0),
             AvoidPredators(0.8),
-            Boundary(0.2)
+            Boundary(1.8)
         ), dT)
-        UniverseExporter(outputPath).use { exporter ->
+        UniverseExporter(path.replace(".xyz", ".sim.xyz")).use { exporter ->
             val time = (1..(seconds * fps)).toList()
             exporter.write(universe)
             for (frame in ProgressBar.wrap(time, "Simulating")) {
