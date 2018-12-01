@@ -12,10 +12,6 @@ class Universe(
         return grid.cellFor(entity).getNear(entity, metadata.interactionDistance)
     }
 
-    fun getNear(entity: Entity, searchDistance: Double): List<Entity> {
-        return grid.cellFor(entity).getNear(entity, searchDistance)
-    }
-
     fun toXYZ(ss: StringBuilder): StringBuilder {
         ss.appendln(entities.size)
         metadata.toXYZ(ss)
