@@ -1,6 +1,9 @@
 \documentclass[a4paper]{article}
 
 \usepackage{../inc/ssarticle}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 \title{{\centering\huge {Agentes auto-propulsados: Boids}}}
 
 \begin{document}
@@ -15,7 +18,32 @@
     \newpage
 
     \section{Fundamentos}
-        \subsection{Boids: Reglas}
+        \subsection{Boids}
+            Reynolds propuso un modelo para simular bandadas de agentes que se basa en la aplicación a cada uno de los agentes una lista determinada de reglas. Las mismas terminan influenciando como es que cada agente se mueve y como interactua con lo que lo rodea.
+
+
+            A alto nivel, el funcionamiento del algoritmo es el siguiente:
+
+            \begin{algorithm}
+                \caption{Boids}\label{pseudo:boids}
+                \begin{algorithmic}[1]
+                    \Procedure{Step}{$rules, factors, boids, dT$}
+                    \For{$boid \gets boids$}
+                        \For{$rule \gets rules$}
+                            \State $boid.velocity \mathrel{+}= factor_i * rule(boid, boids)$
+                        \EndFor
+                        \State $boid.position \mathrel{+}= boid.velocity * dT$
+                    \EndFor
+                \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+
+            A cada una de las reglas se la multiplica por un factor, para hacer que su influencia sobre el sistema sea mayor o menor.
+
+            \subsubsection{Reglas básicas}
+
+            Reynolds propone tres reglas básicas para poder generar un comportamiento de bandada:
+
             \begin{table}[h]
             \begin{tabular}{ccc}
                 \includegraphics[width=0.3\linewidth]{{../imgs/rule_alignment}.png} &
@@ -24,8 +52,128 @@
                 Alineamiento & Cohesión & Separación \\
             \end{tabular}
             \end{table}
+
+            \pagebreak
+
+            La regla de \textbf{alineamiento} hace que cada \textit{boid} busque alinearse con los vecinos:
+
+            \begin{algorithm}
+                \caption{Alineamiento}\label{pseudo:alignment}
+                \begin{algorithmic}[1]
+                    \Procedure{Alineamiento}{$boid, boids$}
+                    \State $\bm{v}_{out} = \{0, 0, 0\}$
+                    \For{$neighbour \gets boids$}
+                        \State $\bm{v}_{out} \mathrel{+}= neighbour.velocity$
+                    \EndFor
+                    \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Velocidad promedio de vecinos}
+                    \State $\bm{v}_{out} = \bm{v}_{out} - boid.velocity$
+                    \State \textbf{return} $\bm{v}_{out}$
+                \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+
+            La regla de \textbf{cohesión} hace que cada \textit{boid} busque moverse hacia el \textit{centro de masa} de la bandada, siendo el \textit{centro de masa}, la posición promedio de los vecinos:
+
+            \begin{algorithm}
+                \caption{Cohesión}\label{pseudo:cohesion}
+                \begin{algorithmic}[1]
+                    \Procedure{Cohesión}{$boid, boids$}
+                    \State $\bm{v}_{out} = \{0, 0, 0\}$
+                    \For{$neighbour \gets boids$}
+                        \State $\bm{v}_{out} \mathrel{+}= neighbour.position$
+                    \EndFor
+                    \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Posición promedio de vecinos}
+                    \State $\bm{v}_{out} = \bm{v}_{out} - boid.position$
+                    \State \textbf{return} $\bm{v}_{out}$
+                \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+
+            La regla de \textbf{separación} hace que cada \textit{boid} busque estar a una cierta distancia de cada uno de sus vecinos. A diferencia de las reglas anteriores, un boid es considerado vecino si está a una distancia menor que la distancia de interacción que se aplica para el resto de las reglas:
+
+            \begin{algorithm}
+                \caption{Separación}\label{pseudo:separation}
+                \begin{algorithmic}[1]
+                    \Procedure{Separación}{$boid, boids$}
+                    \State $\bm{v}_{out} = \{0, 0, 0\}$
+                    \For{$neighbour \gets boids$}
+                        \If{$distance(neighbour, boid) > unsafeDistance$}
+                            \State \textbf{continue}
+                        \EndIf
+                        \State $\bm{v}_{out} \mathrel{-}= boid.position - neighbour.position$
+                    \EndFor
+                    \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Posición promedio de vecinos}
+                    \State $\bm{v}_{out} = \bm{v}_{out} - boid.position$
+                    \State \textbf{return} $\bm{v}_{out}$
+                \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+
+            \pagebreak
+            \subsubsection{TODO: Reglas extendidas}
+                A demás de las reglas básicas, en el trabajo se implementaron un conjunto de reglas extras que buscan agregar complejidad al sistema.
+
+                [TODO] La regla \textbf{TendencyTo} es una regla que puede interpretarse de dos maneras, dependiendo del factor que se le aplique. Un factor positivo hace que los \textit{boids} quieran acercarse a una entidad en particular, mientras que un factor negativo hace que quieran alejarse de esa entidad:
+
+                \begin{algorithm}
+                    \caption{TendencyTo}\label{pseudo:tendency_to}
+                    \begin{algorithmic}[1]
+                        \Procedure{TendencyTo}{$...$}
+                        % \State $\bm{v}_{out} = \{0, 0, 0\}$
+                        % \For{$neighbour \gets boids$}
+                        %     \If{$distance(neighbour, boid) > unsafeDistance$}
+                        %         \State \textbf{continue}
+                        %     \EndIf
+                        %     \State $\bm{v}_{out} \mathrel{-}= boid.position - neighbour.position$
+                        % \EndFor
+                        % \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Posición promedio de vecinos}
+                        % \State $\bm{v}_{out} = \bm{v}_{out} - boid.position$
+                        % \State \textbf{return} $\bm{v}_{out}$
+                    \EndProcedure
+                    \end{algorithmic}
+                \end{algorithm}
+
+                La regla \textbf{Boundary} busca hacer que si un \textit{boid} se escapa del universo sin condiciones de contorno, el mismo vuelva de una manera "orgánica" sin tener saltos abruptos en la velocidad:
+
+                \pagebreak
+
+                \begin{algorithm}
+                    \caption{Boundary}\label{pseudo:boundary}
+                    \begin{algorithmic}[1]
+                        \Procedure{Boundary}{$boid, universe$}
+                        \State $x_{min} \gets universe.metadata.boundaries.minx$
+                        \State $x_{max} \gets universe.metadata.boundaries.maxx$
+                        \State $y_{min} \gets universe.metadata.boundaries.miny$
+                        \State $y_{max} \gets universe.metadata.boundaries.maxy$
+                        \State $z_{min} \gets universe.metadata.boundaries.minz$
+                        \State $z_{max} \gets universe.metadata.boundaries.maxz$
+                        \State $speed \gets CONST$
+                        \State $\bm{v} \gets \{0, 0, 0\}$
+                        \If{$boid.x < x_{min}$}
+                            \State $\bm{v}_x = speed$
+                        \EndIf
+                        \If{$boid.x > x_{max}$}
+                            \State $\bm{v}_x = -speed$
+                        \EndIf
+                        \If{$boid.y < y_{min}$}
+                            \State $\bm{v}_y = speed$
+                        \EndIf
+                        \If{$boid.y > y_{max}$}
+                            \State $\bm{v}_y = -speed$
+                        \EndIf
+                        \If{$boid.z < z_{min}$}
+                            \State $\bm{v}_z = speed$
+                        \EndIf
+                        \If{$boid.z > z_{max}$}
+                            \State $\bm{v}_z = -speed$
+                        \EndIf
+                        \State \textbf{return} $\bm{v}$
+                    \EndProcedure
+                    \end{algorithmic}
+                \end{algorithm}
+
         \subsection{Polarización}
-            Se siguen los pasos de \textit{Vicsek et al.} y se calcula la polarización de la siguiente manera:
+            Se siguen los pasos de \textit{Vicsek et al.} se calcula la polarización de la siguiente manera:
 
             \begin{equation} % Cálculo de la velocidad promedio
             v_a = \frac{1}{Nv}\left|\sum_{i=1}^{N}\mathbf{v}_i\right|
@@ -92,29 +240,6 @@
                 \caption{Simulación}
                 \label{fig:simulation_implementation}
             \end{figure}
-
-        \subsection{Simulación de agentes autopropulsados}
-
-            Con los modelos anteriores, la simulación se realiza siguiendo la propuesta de \textit{Vicsek et al.} \cite{BoidsPaper} de manera tal que todos los agentes tienen una velocidad con la misma magnitud y cada uno se crea con un ángulo elegido al azar. Debido a la discretización del tiempo, la posición de cada agente se calcula de la siguiente manera:
-
-            \begin{equation} % Cálculo de nueva posición
-            \mathbf{x}_i(t + 1) = \mathbf{x}_i(t) + \mathbf{v}_i\Delta t
-            \end{equation}
-
-            Si bien la magnitud de la velocidad es constante a lo largo del tiempo, el ángulo de la misma cambia con cada paso de la simulación:
-
-            \begin{equation} % Cálculo del nuevo ángulo para la velocidad
-            \mathbf{\theta}_i(t + 1) = \langle\mathbf{\theta}_i(t)\rangle_r + \Delta\theta
-            \end{equation}
-            donde $\langle\mathbf{\theta}_i(t)\rangle_r$ representa el ángulo promedio (dirección) de los agentes que se encuentran dentro de un cículo de radio $r$ alrededor del agente $i$ (incluye el ángulo del agente $i$) y donde $\Delta\theta$ es un número aleatorio para agregar ruido.
-
-            La velocidad promedio se define de la siguiente manera:
-
-            \begin{equation}
-            \langle\mathbf{\theta}_i(t)\rangle_r = arctan[\langle sin\Big(\theta(t)\Big)\rangle_r / \langle cos\Big(\theta(t)\Big)\rangle_r]
-            \end{equation}
-
-            donde $\langle sin\Big(\theta(t)\Big)\rangle_r$ y $\langle cos\Big(\theta(t)\Big)\rangle_r$ son el promedio de todos los senos y cosenos del ángulo de cada agente.
 
         \subsection{Detalles de Implementación}
 
