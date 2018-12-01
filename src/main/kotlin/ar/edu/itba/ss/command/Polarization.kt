@@ -7,12 +7,15 @@ import ar.edu.itba.ss.model.Universe
 import ar.edu.itba.ss.plot.PolarizationPlot
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 
 class Polarization : CliktCommand(help = "Plot anim polarization") {
 
     private val inputDefault = "universe.anim.xyz"
     private val input: String by option(help = "Simulation input file. Default '$inputDefault'").default(inputDefault)
+
+    private val open: Boolean by option(help = "Open plot after render").flag()
 
     override fun run() {
         val builder = UniverseImporter(input)
@@ -24,6 +27,9 @@ class Polarization : CliktCommand(help = "Plot anim polarization") {
         val plot = PolarizationPlot()
         plot.add(polarizationPoints)
         plot.save("polarization", false)
+        if (open) {
+            plot.show()
+        }
     }
 
     private fun pointFor(universe: Universe): Pair<Double, Double> {
