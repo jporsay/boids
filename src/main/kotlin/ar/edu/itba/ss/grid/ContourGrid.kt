@@ -7,10 +7,10 @@ import kotlin.math.min
 
 class ContourGrid(universeMetadata: UniverseMetadata, entities: List<Entity>)
     : Grid(
-    1 + cellCountToDivideUniverse + 1,
-        universeMetadata.boundaries.xMax / cellCountToDivideUniverse,
-        universeMetadata.boundaries.yMax / cellCountToDivideUniverse,
-        universeMetadata.boundaries.zMax / cellCountToDivideUniverse,
+    1 + universeCellSideCount + 1,
+        universeMetadata.boundaries.xMax / universeCellSideCount,
+        universeMetadata.boundaries.yMax / universeCellSideCount,
+        universeMetadata.boundaries.zMax / universeCellSideCount,
         entities
     ) {
 
@@ -22,7 +22,7 @@ class ContourGrid(universeMetadata: UniverseMetadata, entities: List<Entity>)
     }
 
     companion object {
-        private const val cellCountToDivideUniverse = 6
+        private const val universeCellSideCount = 6
     }
 
 }

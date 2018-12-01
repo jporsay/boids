@@ -5,10 +5,10 @@ import ar.edu.itba.ss.model.UniverseMetadata
 
 class LoopGrid(universeMetadata: UniverseMetadata, entities: List<Entity>)
     : Grid(
-    cellCountToDivideUniverse,
-    universeMetadata.boundaries.xMax / cellCountToDivideUniverse,
-    universeMetadata.boundaries.yMax / cellCountToDivideUniverse,
-    universeMetadata.boundaries.zMax / cellCountToDivideUniverse,
+    universeCellSideCount,
+    universeMetadata.boundaries.xMax / universeCellSideCount,
+    universeMetadata.boundaries.yMax / universeCellSideCount,
+    universeMetadata.boundaries.zMax / universeCellSideCount,
     entities
 ) {
 
@@ -23,6 +23,6 @@ class LoopGrid(universeMetadata: UniverseMetadata, entities: List<Entity>)
 
 
     companion object {
-        private const val cellCountToDivideUniverse = 6
+        private const val universeCellSideCount = 6
     }
 }
