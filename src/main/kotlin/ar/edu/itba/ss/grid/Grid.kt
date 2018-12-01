@@ -9,7 +9,7 @@ abstract class Grid(
     private val xCellSide: Double,
     private val yCellSide: Double,
     private val zCellSide: Double,
-    private val entities: List<Entity>
+    entities: List<Entity>
 ) {
     protected var cells: Array<Array<Array<Cell>>> = Array(cellSideCount) { Array(cellSideCount) { Array(cellSideCount) { Cell() } } }
 
@@ -46,7 +46,7 @@ abstract class Grid(
 
     init {
         initNeighbours()
-        initEntities()
+        initEntities(entities)
     }
 
     private fun initNeighbours() {
@@ -64,7 +64,7 @@ abstract class Grid(
         }
     }
 
-    private fun initEntities() {
+    private fun initEntities(entities: List<Entity>) {
         entities.forEach { cellFor(it).add(it) }
     }
 
