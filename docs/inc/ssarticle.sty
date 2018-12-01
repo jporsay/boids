@@ -1,0 +1,20 @@
+\usepackage{../inc/sscommon}
+
+\usepackage{hyperref} 
+\hypersetup{
+    colorlinks = true % ref links
+}
+\usepackage[hypcap=true, labelfont=bf]{caption} % ref links point to top of images instead of caption
+
+\usepackage{titling}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill} % center titling
+\renewcommand\maketitlehookd{\vfill\null} %center titling
+\pretitle{{\centering\large Instituto Tecnológico de Buenos Aires} \\ \\}
+% call \title{...} in children
+\posttitle{\\ \\ {\centering\large72.25 Simulación de Sistemas} \vfill}
+\author{Horacio Gomez $(L:50825)$ \and Juan Pablo Orsay $(L:49373)$}
+\date{Segundo Semestre 2018}
+
+\usepackage[backend=biber]{biblatex}
+\usepackage{csquotes}
+\addbibresource{../inc/bibliografia.bib}
