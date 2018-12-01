@@ -22,7 +22,8 @@ class Boundary
 class Alignment
 
 class TendencyTo {
-    - entityType: Type
+    - interactsWith: Type
+    - appliesTo: Type
 }
 
 FlockRule -up-> Rule
