@@ -7,7 +7,7 @@ import kotlin.math.PI
 import kotlin.math.max
 
 
-open class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
+class Entity(val id: Int, val type: Type, val radius: Double, val position: Vector3D, val velocity: Vector3D) {
 
     fun toXYZ(ss: StringBuilder): StringBuilder {
         ss
