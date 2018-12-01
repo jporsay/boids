@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.model
 
+import ar.edu.itba.ss.extensions.fastAppend
 import java.lang.StringBuilder
 
 class UniverseMetadata(
@@ -10,7 +11,7 @@ class UniverseMetadata(
 ) {
 
     fun toXYZ(ss: StringBuilder): StringBuilder {
-        ss.append("age=").append(age).append('\t')
+        ss.append("age=").fastAppend(age).append('\t')
         return boundaries.toXYZ(ss).appendln()
     }
 
@@ -52,9 +53,9 @@ class UniverseMetadata(
 // TODO: should be zero centered. xMax = width/2 and xMin = -xMax. Idem y, z.
 class Boundaries(width: Double, height: Double, depth: Double) {
     fun toXYZ(ss: StringBuilder): StringBuilder = ss
-        .append("width=").append(xMax).append('\t')
-        .append("height=").append(yMax).append('\t')
-        .append("depth=").append(zMax)
+        .append("width=").fastAppend(xMax).append('\t')
+        .append("height=").fastAppend(yMax).append('\t')
+        .append("depth=").fastAppend(zMax)
 
     val xMax = width
     val xMin = 0.0

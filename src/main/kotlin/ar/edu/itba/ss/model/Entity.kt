@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.model
 
+import ar.edu.itba.ss.extensions.fastAppend
 import ar.edu.itba.ss.extensions.toXYZ
 import ar.edu.itba.ss.utils.angle
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
@@ -13,7 +14,7 @@ class Entity(val id: Int, val type: Type, val radius: Double, val position: Vect
         ss
         .append(id).append('\t')
         .append(type.ordinal).append('\t')
-        .append(radius).append('\t')
+        .fastAppend(radius).append('\t')
         position.toXYZ(ss).append('\t')
         return velocity.toXYZ(ss).appendln()
     }
