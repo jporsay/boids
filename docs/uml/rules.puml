@@ -1,6 +1,7 @@
 @startuml
 
 abstract class Rule {
+    - factor: Double
     + apply(entity: Entity, neighbours: List<Entity>, universe: Universe): Vector3D
     # {abstract} appliesTo(type: Type): Boolean
     # {abstract} doApply(entity: Entity, neighbours: List<Entity>, universe: Universe): Vector3D
@@ -11,22 +12,21 @@ abstract class FlockRule {
 }
 
 class Separation {
-    - factor: Double
     - distance: Double
 }
 
-class Cohesion {
-    - factor: Double
-}
+class Cohesion
 
 class Boundary
 
 class Alignment
 
-class AvoidPredators
+class TendencyTo {
+    - entityType: Type
+}
 
 FlockRule -up-> Rule
-AvoidPredators -up-> Rule
+TendencyTo -up-> Rule
 Boundary -up-> Rule
 Cohesion -up-> FlockRule
 Separation -up-> FlockRule
