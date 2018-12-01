@@ -11,38 +11,13 @@ abstract class Grid(
     private val zCellSide: Double,
     entities: List<Entity>
 ) {
-    protected var cells: Array<Array<Array<Cell>>> = Array(cellSideCount) { Array(cellSideCount) { Array(cellSideCount) { Cell() } } }
-
-    private val neighbourCoords = arrayOf(
-        1 to 0 to 0,
-        1 to 1 to 0,
-        1 to -1 to 0,
-        -1 to 0 to 0,
-        -1 to 1 to 0,
-        -1 to -1 to 0,
-        0 to 1 to 0,
-        0 to -1 to 0,
-
-        1 to 0 to 1,
-        1 to 1 to 1,
-        1 to -1 to 1,
-        -1 to 0 to 1,
-        -1 to 1 to 1,
-        -1 to -1 to 1,
-        0 to 0 to 1,
-        0 to 1 to 1,
-        0 to -1 to 1,
-
-        1 to 0 to -1,
-        1 to 1 to -1,
-        1 to -1 to -1,
-        -1 to 0 to -1,
-        -1 to 1 to -1,
-        -1 to -1 to -1,
-        0 to 0 to -1,
-        0 to 1 to -1,
-        0 to -1 to -1
-    )
+    protected var cells: Array<Array<Array<Cell>>> = Array(cellSideCount) {
+        Array(cellSideCount) {
+            Array(cellSideCount) {
+                Cell()
+            }
+        }
+    }
 
     init {
         initNeighbours()
@@ -85,5 +60,36 @@ abstract class Grid(
             else
                 ContourGrid(universeMetadata, entities)
         }
+
+        private val neighbourCoords = arrayOf(
+            1 to 0 to 0,
+            1 to 1 to 0,
+            1 to -1 to 0,
+            -1 to 0 to 0,
+            -1 to 1 to 0,
+            -1 to -1 to 0,
+            0 to 1 to 0,
+            0 to -1 to 0,
+
+            1 to 0 to 1,
+            1 to 1 to 1,
+            1 to -1 to 1,
+            -1 to 0 to 1,
+            -1 to 1 to 1,
+            -1 to -1 to 1,
+            0 to 0 to 1,
+            0 to 1 to 1,
+            0 to -1 to 1,
+
+            1 to 0 to -1,
+            1 to 1 to -1,
+            1 to -1 to -1,
+            -1 to 0 to -1,
+            -1 to 1 to -1,
+            -1 to -1 to -1,
+            0 to 0 to -1,
+            0 to 1 to -1,
+            0 to -1 to -1
+        )
     }
 }
