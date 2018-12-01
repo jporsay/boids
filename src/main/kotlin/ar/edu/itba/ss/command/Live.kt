@@ -3,6 +3,7 @@ package ar.edu.itba.ss.command
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.image.ImageView
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 
@@ -20,6 +21,7 @@ import org.jzy3d.plot3d.primitives.Scatter
 import org.jzy3d.plot3d.primitives.Shape
 import org.jzy3d.plot3d.rendering.canvas.Quality
 import org.jzy3d.maths.Coord3d
+import org.jzy3d.plot3d.primitives.ScatterMultiColor
 import java.util.*
 
 
@@ -51,11 +53,11 @@ class DemoJzy3dFX : Application() {
         val imageView = factory.bindImageView(chart)
 
         // JavaFX
-        val pane = StackPane()
+        val pane = BorderPane()
         val scene = Scene(pane)
         stage.scene = scene
         stage.show()
-        pane.children.add(imageView)
+        pane.center = imageView
 
         factory.addSceneSizeChangedListener(chart, scene)
 
@@ -68,12 +70,11 @@ class DemoJzy3dFX : Application() {
         // -------------------------------
         // Create a chart
         val quality = Quality.Advanced
-        quality.isSmoothPolygon = true;
-        quality.isAnimated = true;
+        quality.isSmoothPolygon = true
+        quality.isAnimated = true
 
         // let factory bind mouse and keyboard controllers to JavaFX node
         val chart = factory.newChart(quality, toolkit) as AWTChart
-
         val scatter = createScatter()
         chart.scene.graph.add(scatter)
 
@@ -81,7 +82,13 @@ class DemoJzy3dFX : Application() {
         return chart
     }
 
-    private fun createScatter(): Scatter {
+    private fun createScatter(): ScatterMultiColor {
+        val scatter = ScatterMultiColor(createData(), ColorMapper(ColorMapRainbow(), -0.5, 0.5))
+        scatter.setWidth(4f)
+        return scatter
+    }
+
+    private fun createData(): Array<Coord3d?> {
         val size = 500
         var x: Float
         var y: Float
@@ -89,7 +96,6 @@ class DemoJzy3dFX : Application() {
         var a: Float
 
         val points = arrayOfNulls<Coord3d>(size)
-        val colors = arrayOfNulls<Color>(size)
 
         val r = Random()
         r.setSeed(0)
@@ -99,11 +105,8 @@ class DemoJzy3dFX : Application() {
             y = r.nextFloat() - 0.5f
             z = r.nextFloat() - 0.5f
             points[i] = Coord3d(x, y, z)
-            a = 0.25f
-            colors[i] = Color(x, y, z, a)
         }
-
-        return Scatter(points, colors)
+        return points
     }
 
     companion object {
