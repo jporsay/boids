@@ -2,7 +2,7 @@ package ar.edu.itba.ss.command
 
 import ar.edu.itba.ss.generator.BoidGenerator
 import ar.edu.itba.ss.generator.IdProvider
-import ar.edu.itba.ss.generator.PredatorGenerator
+import ar.edu.itba.ss.generator.SpecialGenerator
 import ar.edu.itba.ss.model.Universe
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.model.Boundaries
@@ -20,8 +20,8 @@ class Generate : CliktCommand(help = "Generate a universe") {
     private val boidsDefault = 500
     private val boids: Int by option(help = "Amount of boids to generate. Default $boidsDefault").int().default(boidsDefault)
 
-    private val predatorsDefault = 0
-    private val predators: Int by option(help = "Amount of predators to generate. Default $predatorsDefault").int().default(predatorsDefault)
+    private val specialsDefault = 0
+    private val specials: Int by option(help = "Amount of special entities to generate. Default $specialsDefault").int().default(specialsDefault)
 
     private val widthDefault = 20.0
     private val width: Double by option(help = "Width of the simulation area. Default $widthDefault").double().default(widthDefault)
@@ -45,9 +45,9 @@ class Generate : CliktCommand(help = "Generate a universe") {
     private fun generateUniverse(id: String) {
         val idProvider = IdProvider()
         val boidsGenerator = BoidGenerator(idProvider, boids, width, height, depth)
-        val predatorGenerator = PredatorGenerator(idProvider, predators, width, height, depth)
+        val specialGenerator = SpecialGenerator(idProvider, specials, width, height, depth)
         val builder = Universe.Builder(UniverseMetadata.Builder(Boundaries(width, height, depth)))
-        builder.entities = boidsGenerator.generate() + predatorGenerator.generate()
+        builder.entities = boidsGenerator.generate() + specialGenerator.generate()
         UniverseExporter("universe__id_$id.xyz").use {
             it.write(builder.build())
         }

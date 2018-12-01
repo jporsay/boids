@@ -3,6 +3,7 @@ package ar.edu.itba.ss.command
 import ar.edu.itba.ss.Simulation
 import ar.edu.itba.ss.io.UniverseExporter
 import ar.edu.itba.ss.io.UniverseImporter
+import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.rules.*
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
@@ -25,7 +26,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private val fpsDefault = 60
     private val fps: Int by option(help = "Simulation frames per second. Default $fpsDefault").int().default(fpsDefault)
 
-    private val distanceDefault = 2.0
+    private val distanceDefault = 3.0
     private val distance: Double by option(help = "Simulation frames per second. Default $distanceDefault").double().default(distanceDefault)
 
     private val limitDefault = 100L
@@ -53,11 +54,12 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
         val universe = builder.build()
         val dT = 1.0 / fps
         val simulation = Simulation(universe, listOf(
-            Alignment(0.4),
-            Cohesion(0.01),
-            Separation(1.0, 1.0),
-            AvoidPredators(0.8),
-            Boundary(1.8)
+            Alignment(1.0),
+            Cohesion(0.3),
+            Separation(0.3, 1.0),
+            TendencyTo(-0.8, Type.Boid, Type.SpecialEntity),
+            TendencyTo(0.4, Type.SpecialEntity, Type.Boid),
+            Boundary(0.3)
         ), dT)
         UniverseExporter(path.replace(".xyz", ".sim.xyz")).use { exporter ->
             val time = (1..(seconds * fps)).toList()

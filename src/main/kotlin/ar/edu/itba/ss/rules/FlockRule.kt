@@ -5,7 +5,7 @@ import ar.edu.itba.ss.model.Type
 import ar.edu.itba.ss.model.Universe
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D
 
-abstract class FlockRule : Rule() {
+abstract class FlockRule(factor: Double) : Rule(factor) {
 
     final override fun appliesTo(type: Type): Boolean = type == Type.Boid
 
