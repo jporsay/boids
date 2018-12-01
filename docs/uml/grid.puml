@@ -1,0 +1,21 @@
+@startuml
+
+class Grid {
+    - cellSideCount: Int
+    - xCellSide: Double
+    - yCellSide: Double
+    - zCellSide: Double
+    + cellFor(entity: Entity): Cell
+    - initNeighbours()
+    - initEntities(entities: List<Entity>)
+}
+
+class Cell {
+    - entities: List<Entity>
+    - neighbours: List<Cell>
+    + getNear(entity: Entity, distance: Double): List<Entity>
+}
+
+Grid -left-* Cell : uses
+
+@enduml

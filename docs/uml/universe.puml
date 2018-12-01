@@ -1,0 +1,32 @@
+@startuml
+
+class Boundaries {
+    +xMax: Double
+    +xMin: Double
+    +yMax: Double
+    +yMin: Double
+    +zMax: Double
+    +zMin: Double
+    +toXYZ()
+}
+
+class UniverseMetadata {
+    +age: Double
+    +loopContour: Bool
+    +interactionDistance: Double
+    +boundaries: Boundaries
+    +toXYZ()
+}
+
+class Universe {
+    +metadata: UniverseMetadata
+    +entities: List<Entity>
+    -grid: Grid
+    +getNear(entity: Entity): List<Entity>
+    +toXYZ()
+}
+
+Universe --* UniverseMetadata : uses
+UniverseMetadata -left-* Boundaries : uses
+
+@enduml

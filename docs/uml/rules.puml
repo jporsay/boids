@@ -1,0 +1,35 @@
+@startuml
+
+abstract class Rule {
+    + apply(entity: Entity, neighbours: List<Entity>, universe: Universe): Vector3D
+    # {abstract} appliesTo(type: Type): Boolean
+    # {abstract} doApply(entity: Entity, neighbours: List<Entity>, universe: Universe): Vector3D
+}
+
+abstract class FlockRule {
+    # applyToBoid(entity: Entity, boidsAtSight: List<Entity>, universe: Universe): Vector3D
+}
+
+class Separation {
+    - factor: Double
+    - distance: Double
+}
+
+class Cohesion {
+    - factor: Double
+}
+
+class Boundary
+
+class Alignment
+
+class AvoidPredators
+
+FlockRule -up-> Rule
+AvoidPredators -up-> Rule
+Boundary -up-> Rule
+Cohesion -up-> FlockRule
+Separation -up-> FlockRule
+Alignment -up-> FlockRule
+
+@enduml

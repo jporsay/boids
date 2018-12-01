@@ -1,0 +1,13 @@
+@startuml
+
+class Simulation {
+    - universe: universe
+    - rules: List<Rule>
+    - dT: Double
+    + step(): Universe
+    - clampVelocity(velocity: Vector3D, maxSpeed: Double): Vector3D
+    - loopPosition(position: Vector3D): Vector3D
+    - loopValue(value: Double, max: Double): Double
+}
+
+@enduml

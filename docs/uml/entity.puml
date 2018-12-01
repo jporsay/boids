@@ -1,0 +1,21 @@
+@startuml
+
+enum Type {
+    Boid(maxSpeed = 10.0)
+    Predator(maxSpeed = 20.0)
+}
+
+class Entity {
+    - id: Int
+    - type: Type
+    - radius: Double
+    - position: Vector3D
+    - velocity: Vector3D
+    + toXYZ(): String
+    + sees(other: Entity): Bool
+    + distance(other: Entity): Double
+}
+
+Type *-left- Entity: uses
+
+@enduml
