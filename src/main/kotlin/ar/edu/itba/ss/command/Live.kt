@@ -93,7 +93,6 @@ class DemoJzy3dFX : Application() {
         var x: Float
         var y: Float
         var z: Float
-        var a: Float
 
         val points = arrayOfNulls<Coord3d>(size)
 
