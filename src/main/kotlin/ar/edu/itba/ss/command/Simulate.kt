@@ -42,8 +42,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private fun universes(): List<File> {
         val sourceUniversePattern = Pattern.compile("universe__id_(?<id>\\d{4})\\.xyz")
         return dir
-            .walkTopDown()
-            .filter { file -> sourceUniversePattern.matcher(file.name).matches() }
+            .listFiles { file -> sourceUniversePattern.matcher(file.name).matches() }
             .toList()
     }
 
