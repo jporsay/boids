@@ -17,7 +17,7 @@ import kotlin.math.absoluteValue
 
 class Generate : CliktCommand(help = "Generate a universe") {
 
-    private val boidsDefault = 500
+    private val boidsDefault = 1000
     private val boids: Int by option(help = "Amount of boids to generate. Default $boidsDefault").int().default(boidsDefault)
 
     private val specialsDefault = 0
