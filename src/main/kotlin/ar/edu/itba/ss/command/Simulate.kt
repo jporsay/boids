@@ -28,7 +28,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private val fpsDefault = 60
     private val fps: Int by option(help = "Simulation frames per second. Default $fpsDefault").int().default(fpsDefault)
 
-    private val distanceDefault = 3.0
+    private val distanceDefault = 2.0
     private val distance: Double by option(help = "Simulation frames per second. Default $distanceDefault").double().default(distanceDefault)
 
     private val limit: Long by option(help = "Limit to this amount of files.").long().default(Long.MAX_VALUE)
@@ -90,11 +90,11 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     }
 
     class RuleSet(val name: String,
-                       alignmentFactor: Double = 0.5,
-                       cohesionFactor: Double = 0.5,
-                       separationFactor: Double = 0.5,
+                       alignmentFactor: Double = 0.3,
+                       cohesionFactor: Double = 0.3,
+                       separationFactor: Double = 0.3,
                        boidTendencyToSpecialFactor: Double = -0.8,
-                       specialTendencyToBoidFactor: Double = 0.0,
+                       specialTendencyToBoidFactor: Double = 0.2,
                        boundaryFactor: Double = 0.3
     ) {
         val rules = listOf(

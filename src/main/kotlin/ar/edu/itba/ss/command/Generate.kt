@@ -25,13 +25,13 @@ class Generate : CliktCommand(help = "Generate a universe") {
     private val specialsDefault = 0
     private val specials: Int by option(help = "Amount of special entities to generate. Default $specialsDefault").int().default(specialsDefault)
 
-    private val widthDefault = 20.0
+    private val widthDefault = 32.0
     private val width: Double by option(help = "Width of the simulation area. Default $widthDefault").double().default(widthDefault)
 
-    private val heightDefault = 20.0
+    private val heightDefault = 32.0
     private val height: Double by option(help = "Height of the simulation area. Default $heightDefault").double().default(heightDefault)
 
-    private val depthDefault = 20.0
+    private val depthDefault = 32.0
     private val depth: Double by option(help = "Depth of the simulation area. Default $depthDefault").double().default(depthDefault)
 
     private val amountDefault = 1
