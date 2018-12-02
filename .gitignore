@@ -103,3 +103,5 @@ gradle-app.setting
 
 universe.xyz
 universe.sim.xyz
+**.sim.xyz
+
