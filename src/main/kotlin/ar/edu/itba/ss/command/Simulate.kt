@@ -9,7 +9,9 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.double
+import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
 import me.tongfei.progressbar.ProgressBar
@@ -35,9 +37,11 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
 
     private val caosSuite: Boolean by option(help = "Generate the entire fullSuite").flag()
 
-    private fun universes(path: String = "."): List<File> {
+    private val dir: File by option(help = "Directory to work in. Default '.'").file(exists = true, fileOkay = false).default(File("."))
+
+    private fun universes(): List<File> {
         val sourceUniversePattern = Pattern.compile("universe__id_(?<id>\\d{4})\\.xyz")
-        return File(path)
+        return dir
             .walkTopDown()
             .filter { file -> sourceUniversePattern.matcher(file.name).matches() }
             .toList()
@@ -91,7 +95,7 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
                        cohesionFactor: Double = 0.5,
                        separationFactor: Double = 0.5,
                        boidTendencyToSpecialFactor: Double = -0.8,
-                       specialTendencyToBoidFactor: Double = 0.4,
+                       specialTendencyToBoidFactor: Double = 0.0,
                        boundaryFactor: Double = 0.3
     ) {
         val rules = listOf(

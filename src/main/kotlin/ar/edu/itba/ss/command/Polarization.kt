@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.types.file
 import org.knowm.xchart.XYSeries
 import java.io.File
 import java.util.regex.Pattern
@@ -17,11 +18,7 @@ import kotlin.math.ceil
 import kotlin.math.pow
 
 class Polarization : CliktCommand(help = "Plot anim polarization") {
-
-    private val inputDefault = "universe.anim.xyz"
-    private val input: String by option(help = "Simulation input file. Default '$inputDefault'").default(inputDefault)
-
-    private val open: Boolean by option(help = "Open plot after render").flag()
+    private val dir: File by option(help = "Directory to work in. Default '.'").file(exists = true, fileOkay = false).default(File("."))
 
     override fun run() {
         plot('a')
@@ -31,9 +28,9 @@ class Polarization : CliktCommand(help = "Plot anim polarization") {
     }
 
     private fun plot(label: Char, path: String = ".") {
-        val pattern = Pattern.compile("universe__id_(?<id>\\d{4})\\.${label}_(?<value>\\d+\\.\\d+)\\.sim\\.xyz")
+        val pattern = Pattern.compile("universe__id_(?<id>\\d{4})\\.${label}_(?<value>-?\\d+\\.\\d+)\\.sim\\.xyz")
         val plot = PolarizationPlot()
-        File(path)
+        dir
             .listFiles { file -> pattern.matcher(file.name).matches() }
             .groupBy { file ->
                 val matcher = pattern.matcher(file.name)
@@ -52,9 +49,8 @@ class Polarization : CliktCommand(help = "Plot anim polarization") {
                 }
                 plot.addSeries("$label=$value", datapoints)
             }
-        plot.save("polarization_$label", false)
-        if (open) {
-            plot.show()
+        if (!plot.isEmpty()) {
+            plot.save(dir.resolve("polarization_$label").absolutePath, false)
         }
     }
 
@@ -73,6 +69,10 @@ class Polarization : CliktCommand(help = "Plot anim polarization") {
         override fun yAxisLabel(): String = "Polarization"
 
         override fun chartStyle(): XYSeries.XYSeriesRenderStyle = XYSeries.XYSeriesRenderStyle.Scatter
+
+        fun isEmpty(): Boolean {
+            return chart.seriesMap.isEmpty()
+        }
 
         fun addSeries(label: String, points: DataPoints) {
             chart.addSeries(label, points.x(), points.y(), points.error())

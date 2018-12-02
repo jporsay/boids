@@ -12,7 +12,9 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.double
+import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
+import java.io.File
 import kotlin.math.absoluteValue
 
 class Generate : CliktCommand(help = "Generate a universe") {
@@ -35,6 +37,11 @@ class Generate : CliktCommand(help = "Generate a universe") {
     private val amountDefault = 1
     private val amount: Int by option(help = "Amount of universes to generate. Default $amountDefault").int().default(amountDefault)
 
+    private val dir: File by option(help = "Directory to work in. Default '.'").file(exists = true, fileOkay = false).default(
+        File(".")
+    )
+
+
     override fun run() {
         (0 until amount).forEach {
             val id = (SeededRandom.randomInt().absoluteValue % 10000).toString().padStart(4, '0')
@@ -48,7 +55,7 @@ class Generate : CliktCommand(help = "Generate a universe") {
         val specialGenerator = SpecialGenerator(idProvider, specials, width, height, depth)
         val builder = Universe.Builder(UniverseMetadata.Builder(Boundaries(width, height, depth)))
         builder.entities = boidsGenerator.generate() + specialGenerator.generate()
-        UniverseExporter("universe__id_$id.xyz").use {
+        UniverseExporter(dir.resolve("universe__id_$id.xyz").absolutePath).use {
             it.write(builder.build())
         }
     }
