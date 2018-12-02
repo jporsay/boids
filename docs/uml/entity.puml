@@ -1,8 +1,8 @@
 @startuml
 
 enum Type {
-    Boid(maxSpeed = 10.0)
-    SpecialEntity(maxSpeed = 20.0)
+    Boid(maxSpeed = 32.0, radius=0.1)
+    SpecialEntity(maxSpeed = 64.0, radius=1.0)
 }
 
 class Entity {
