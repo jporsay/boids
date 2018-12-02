@@ -282,10 +282,109 @@
                 Para el cáclulo de vecinos se utiliza el método llamado \textit{Cell Index Method}. El mismo consiste en subdividir el espacio de simulación (Universo) en celdas de un determinado tamaño. Debido a que cada agente pertenece a una única celda, el método permite reducir el costo de búsqueda de vecinos de $N^2$ a un número más cercano a $N$. Dado que las dimensiones del universo son más de un orden de magnitud mayores que la distancia de búsqueda, se decidió fijar una cantidad de celdas determinadas para cada eje.
 
             \subsubsection{Cálculo de ángulo entre vectores}
-                Se descubrió que el cáclulo del ángulo entre dos vectores era la operación que más tiempo demoraba, por lo que se implementó la función $acos$ propuesta por NVidia\cite{FastAcos}
+                Se descubrió que el cáclulo del ángulo entre dos vectores era la operación que más tiempo demoraba, por lo que se implementó la función $acos$ propuesta por NVidia\cite{FastAcos}.
+
+        \subsection{Visualización}
+            Para realizar las animaciones y visualizaciones de las simulaciones se utiliza \textit{Ovito}.
+
+            Para poder dar una idea de la posición en un espacio que cuenta con tres dimensiones, se decidió utilizar la posición de cada \textit{boid} para determinar el color que el mismo tendrá siguiendo las siguientes reglas:
+
+            \begin{itemize}
+                \item $R = position.x / width$
+                \item $G = position.y / height$
+                \item $B = position.z / depth$
+            \end{itemize}
+
+            De esa manera, aquellos \textit{boids} que se encuentren en el mismo área de la simulación tendrán un color similar, lo que permite tener una idea de la distribución de las entidades dentro del universo.
+
+            [TODO] Imagen de la visualización
 
     \section{[TODO] Resultados}
         Si bien la implementación realizada soporta simular con o sin condiciones de contorno, se decidió que únicamente se analizarán escenarios con condiciones de contorno.
+
+        \subsection{Sin boids especiales}
+            Para las simulaciones sin boids especiales, se estudia el comportamiento del sistema utilizando los siguientes parámetros como base:
+            % \begin{center}
+                \begin{table}[h]
+                    \centering
+                    \begin{tabular}{|r|l|}
+                        \hline
+                        Dimensión del universo & $20m$ x $20m$ x $20m$ \\
+                        Condiciones de contorno & activadas \\
+                        Número de boids & $1000$ \\
+                        Número de especiales & $0$ \\
+                        Distancia de interacción & $3m$ \\
+                        Radio de boids & $0.1m$ \\
+                        Velocidad máxima de boids & $32 m/s$ \\
+                        Radio de especiales & $1.0m$ \\
+                        Velocidad máxima de especiales & $64 m/s$ \\
+                        \hline
+                    \end{tabular}
+                \end{table}
+            % \end{center}
+
+            Los factores de multiplicación base para cada una de las reglas son los siguientes:
+
+            % \begin{center}
+                \begin{table}[h]
+                    \centering
+                    \begin{tabular}{|r|l|}
+                        \hline
+                        Alineamiento & $0.5$ \\
+                        Cohesión & $0.5$ \\
+                        Separación & $0.5$ \\
+                        Tendencia boid a especial & $-0.8$ \\
+                        tendencia especial a boid & $0.4$ \\
+                        \hline
+                    \end{tabular}
+                \end{table}
+            % \end{center}
+
+            \subsubsection{[TODO] Polarización: Alineamiento}
+                Se varía el factor de la regla de \textit{alineamiento} para ver su impacto en la polarización del sistema.
+
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/polarization_a}.png}
+                    \caption{Polarización variando factor alineamiento}
+                    \label{fig:polarization_a}
+                \end{figure}
+
+                [TODO: Escribir observaciones]
+                \subsubsection{[TODO] Polarización: Cohesión}
+                Se varía el factor de la regla de \textit{cohesión} para ver su impacto en la polarización del sistema.
+
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/polarization_c}.png}
+                    \caption{Polarización variando factor cohesión}
+                    \label{fig:polarization_c}
+                \end{figure}
+
+                [TODO: Escribir observaciones]
+
+                \subsubsection{[TODO] Polarización: Separación}
+                Se varía el factor de la regla de \textit{separación} para ver su impacto en la polarización del sistema.
+
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/polarization_s}.png}
+                    \caption{Polarización variando factor separación}
+                    \label{fig:polarization_s}
+                \end{figure}
+
+                [TODO: Escribir observaciones]
+            \subsection{[TODO] Con boids especiales}
+                Se agregan $3$ boids especiales y se estudia la variación del factor de la regla "\textit{Tendencia a}"
+
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/polarization_t}.png}
+                    \caption{Polarización variando Tendencia especial a boid}
+                    \label{fig:polarization_s}
+                \end{figure}
+
+                [TODO]
 
     \section{[TODO] Conclusiones}
             TODO
