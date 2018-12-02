@@ -22,7 +22,7 @@ class ContourGrid(universeMetadata: UniverseMetadata, entities: List<Entity>)
     }
 
     companion object {
-        private const val universeCellSideCount = 6
+        private const val universeCellSideCount = 8
     }
 
 }
