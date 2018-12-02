@@ -21,7 +21,6 @@
         \subsection{Boids}
             Reynolds propuso un modelo para simular bandadas de agentes que se basa en la aplicación a cada uno de los agentes una lista determinada de reglas. Las mismas terminan influenciando como es que cada agente se mueve y como interactua con lo que lo rodea.
 
-
             A alto nivel, el funcionamiento del algoritmo es el siguiente:
 
             \begin{algorithm}
@@ -29,9 +28,14 @@
                 \begin{algorithmic}[1]
                     \Procedure{Step}{$rules, factors, boids, dT$}
                     \For{$boid \gets boids$}
+                        \State $\bm{v} = boid.velocity$
                         \For{$rule \gets rules$}
-                            \State $boid.velocity \mathrel{+}= factor_i * rule(boid, boids)$
+                            \State $\bm{v} \mathrel{+}= factor_i * rule(boid, boids)$
                         \EndFor
+                        \If{$magnitude(\bm{v}) > MAX\_SPEED$}
+                            \State $\bm{v} = \bm{v} / magnitude(\bm{v}) * MAX\_SPEED$
+                        \EndIf
+                        \State $boid.velocity = v$
                         \State $boid.position \mathrel{+}= boid.velocity * dT$
                     \EndFor
                 \EndProcedure
@@ -40,20 +44,32 @@
 
             A cada una de las reglas se la multiplica por un factor, para hacer que su influencia sobre el sistema sea mayor o menor.
 
+            \subsubsection{Vecinos}
+            Dado que todas las reglas son de interacción entre \textit{boids}, se define un radio $distance$ y un ángulo $angle$ dentro del cual deben de estar los otros \textit{boids} para ser considerados vecinos:
+
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.25\textwidth]{{../imgs/neighbourhood}.png}
+                \caption{Vecinos}
+                \label{fig:neighbourhood}
+            \end{figure}
+
             \subsubsection{Reglas básicas}
 
-            Reynolds propone tres reglas básicas para poder generar un comportamiento de bandada:
+            Reynolds propone tres reglas básicas para poder generar un comportamiento de bandada.
 
-            \begin{table}[h]
-            \begin{tabular}{ccc}
-                \includegraphics[width=0.3\linewidth]{{../imgs/rule_alignment}.png} &
-                \includegraphics[width=0.3\linewidth]{{../imgs/rule_cohesion}.png} &
-                \includegraphics[width=0.3\linewidth]{{../imgs/rule_separation}.png} \\
-                Alineamiento & Cohesión & Separación \\
-            \end{tabular}
-            \end{table}
+            Unicamente los \textit{boids} que están dentro del círculo afectan al \textit{boid}.
 
-            \pagebreak
+            \begin{center}
+                \begin{table}[h]
+                    \begin{tabular}{ccc}
+                        \includegraphics[width=0.25\linewidth]{{../imgs/rule_alignment}.png} &
+                        \includegraphics[width=0.25\linewidth]{{../imgs/rule_cohesion}.png} &
+                        \includegraphics[width=0.25\linewidth]{{../imgs/rule_separation}.png} \\
+                        Alineamiento & Cohesión & Separación \\
+                    \end{tabular}
+                    \end{table}
+            \end{center}
 
             La regla de \textbf{alineamiento} hace que cada \textit{boid} busque alinearse con los vecinos:
 
@@ -68,7 +84,7 @@
                     \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Velocidad promedio de vecinos}
                     \State $\bm{v}_{out} = \bm{v}_{out} - boid.velocity$
                     \State \textbf{return} $\bm{v}_{out}$
-                \EndProcedure
+                    \EndProcedure
                 \end{algorithmic}
             \end{algorithm}
 
@@ -85,7 +101,7 @@
                     \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Posición promedio de vecinos}
                     \State $\bm{v}_{out} = \bm{v}_{out} - boid.position$
                     \State \textbf{return} $\bm{v}_{out}$
-                \EndProcedure
+                    \EndProcedure
                 \end{algorithmic}
             \end{algorithm}
 
@@ -105,31 +121,28 @@
                     \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Posición promedio de vecinos}
                     \State $\bm{v}_{out} = \bm{v}_{out} - boid.position$
                     \State \textbf{return} $\bm{v}_{out}$
-                \EndProcedure
+                    \EndProcedure
                 \end{algorithmic}
             \end{algorithm}
 
             \pagebreak
-            \subsubsection{TODO: Reglas extendidas}
+            \subsubsection{Reglas extendidas}
                 A demás de las reglas básicas, en el trabajo se implementaron un conjunto de reglas extras que buscan agregar complejidad al sistema.
 
-                [TODO] La regla \textbf{TendencyTo} es una regla que puede interpretarse de dos maneras, dependiendo del factor que se le aplique. Un factor positivo hace que los \textit{boids} quieran acercarse a una entidad en particular, mientras que un factor negativo hace que quieran alejarse de esa entidad:
+                La regla \textbf{TendencyTo} es una regla que puede interpretarse de dos maneras dependiendo del factor que se le aplique. Un factor positivo hace que las entidades se acerquen a otras de un tipo específico, mientras que un factor negativo hace que se alejen:
 
                 \begin{algorithm}
                     \caption{TendencyTo}\label{pseudo:tendency_to}
                     \begin{algorithmic}[1]
-                        \Procedure{TendencyTo}{$...$}
-                        % \State $\bm{v}_{out} = \{0, 0, 0\}$
-                        % \For{$neighbour \gets boids$}
-                        %     \If{$distance(neighbour, boid) > unsafeDistance$}
-                        %         \State \textbf{continue}
-                        %     \EndIf
-                        %     \State $\bm{v}_{out} \mathrel{-}= boid.position - neighbour.position$
-                        % \EndFor
-                        % \State $\bm{v}_{out} = \bm{v}_{out} / length(neighbours)$\Comment{Posición promedio de vecinos}
-                        % \State $\bm{v}_{out} = \bm{v}_{out} - boid.position$
-                        % \State \textbf{return} $\bm{v}_{out}$
-                    \EndProcedure
+                        \Procedure{TendencyTo}{$boid, neighbours, interactWith$}
+                            \State $\bm{v}_{out} = \{0, 0, 0\}$
+                            \For{$neighbour \gets neighbours$}
+                                \If{$neighbour.type \mathrel{!}= interactWith$}
+                                    \State \textbf{continue}
+                                \EndIf
+                                \State $\bm{v}_{out} \mathrel{+}= (neighbour.position - boid.position) / 10$
+                            \EndFor
+                        \EndProcedure
                     \end{algorithmic}
                 \end{algorithm}
 
@@ -141,60 +154,54 @@
                     \caption{Boundary}\label{pseudo:boundary}
                     \begin{algorithmic}[1]
                         \Procedure{Boundary}{$boid, universe$}
-                        \State $x_{min} \gets universe.metadata.boundaries.minx$
-                        \State $x_{max} \gets universe.metadata.boundaries.maxx$
-                        \State $y_{min} \gets universe.metadata.boundaries.miny$
-                        \State $y_{max} \gets universe.metadata.boundaries.maxy$
-                        \State $z_{min} \gets universe.metadata.boundaries.minz$
-                        \State $z_{max} \gets universe.metadata.boundaries.maxz$
-                        \State $speed \gets CONST$
-                        \State $\bm{v} \gets \{0, 0, 0\}$
-                        \If{$boid.x < x_{min}$}
-                            \State $\bm{v}_x = speed$
-                        \EndIf
-                        \If{$boid.x > x_{max}$}
-                            \State $\bm{v}_x = -speed$
-                        \EndIf
-                        \If{$boid.y < y_{min}$}
-                            \State $\bm{v}_y = speed$
-                        \EndIf
-                        \If{$boid.y > y_{max}$}
-                            \State $\bm{v}_y = -speed$
-                        \EndIf
-                        \If{$boid.z < z_{min}$}
-                            \State $\bm{v}_z = speed$
-                        \EndIf
-                        \If{$boid.z > z_{max}$}
-                            \State $\bm{v}_z = -speed$
-                        \EndIf
-                        \State \textbf{return} $\bm{v}$
-                    \EndProcedure
+                            \State $x_{min} \gets universe.metadata.boundaries.minx$
+                            \State $x_{max} \gets universe.metadata.boundaries.maxx$
+                            \State $y_{min} \gets universe.metadata.boundaries.miny$
+                            \State $y_{max} \gets universe.metadata.boundaries.maxy$
+                            \State $z_{min} \gets universe.metadata.boundaries.minz$
+                            \State $z_{max} \gets universe.metadata.boundaries.maxz$
+                            \State $speed \gets CONST$
+                            \State $\bm{v} \gets \{0, 0, 0\}$
+                            \If{$boid.x < x_{min}$}
+                                \State $\bm{v}_x = speed$
+                            \EndIf
+                            \If{$boid.x > x_{max}$}
+                                \State $\bm{v}_x = -speed$
+                            \EndIf
+                            \If{$boid.y < y_{min}$}
+                                \State $\bm{v}_y = speed$
+                            \EndIf
+                            \If{$boid.y > y_{max}$}
+                                \State $\bm{v}_y = -speed$
+                            \EndIf
+                            \If{$boid.z < z_{min}$}
+                                \State $\bm{v}_z = speed$
+                            \EndIf
+                            \If{$boid.z > z_{max}$}
+                                \State $\bm{v}_z = -speed$
+                            \EndIf
+                            \State \textbf{return} $\bm{v}$
+                        \EndProcedure
                     \end{algorithmic}
                 \end{algorithm}
 
         \subsection{Polarización}
-            Se siguen los pasos de \textit{Vicsek et al.} se calcula la polarización de la siguiente manera:
+            Polarización es un parámetro que permite tener un indicador sobre el estado de alineamiento de las velocidades de los \textit{boids} dentro del universo (ignorando los depredadores). La misma adquiere valores entre $0$ (desorden, cada \textit{boid} se mueve en una dirección distinta al resto) y $1$ (orden, todos los \textit{boids} se mueven en la misma dirección).
 
-            \begin{equation} % Cálculo de la velocidad promedio
-            v_a = \frac{1}{Nv}\left|\sum_{i=1}^{N}\mathbf{v}_i\right|
-            \end{equation}
+            Para definir polarización en tres dimensiones se sigue el modelo propuesto por \textit{Vicsek et al.}\cite{PhysRevLett.75.1226} ya que aplica de igual manera para dos que para tres dimensiones. Se modifica el denominador $Nv$ ya que cada \textit{boid} tiene su propia rapidez:
 
-            donde $N$ es la cantidad de agentes en el universo, $v$ es la magnitud de la velocidad (igual para todos los agentes) y $\mathbf{v}_i$ es la velocidad de cada agente.
+            $$v_{avg} = \frac{\sum_{i=1}^{N}\left|\mathbf{v}_i\right|}{N}$$
+            $$v_a = \frac{1}{v_{avg}}\left|\sum_{i=1}^{N}\mathbf{v}_i\right|$$
 
-            La polarización nos permite tener un indicador sobre el estado del alineamiento de los agentes dentro del universo, en donde $0$ es desorden absoluto y $1$ es alineamiento perfecto (todos los agentes se mueven en exactamente la misma dirección).
-
-
-        \subsection{Cálculo de vecinos}
-            Para el cáclulo de vecinos se utiliza el método llamado \textit{Cell Index Method}. El mismo consiste en subdividir el espacio de simulación (Universo) en celdas cuadradas de un determinado largo de manera tal que el radio de búsqueda de vecinos sea menor que el largo de cada celda. Debido a que cada agente pertenece a una única celda y a que el ancho de la celda es mayor al radio de búsqueda, el método permite reducir el costo de búsqueda de vecinos de $N^2$ a $N$.
-
+            donde $N$ es la cantidad de agentes en el universo y $\mathbf{v}_i$ es la velocidad de cada agente.
 
     \section{Implementación}
 
-        \subsection{Universe}
+        \subsection{Universo}
 
-            El universo utilizado para realizar la simulación es un hiperrectánculo con un largo $W$, alto $H$ y profundidad $D$. A su vez, es posible crear simulaciones con o sin condiciones de contorno.
+            El universo utilizado para realizar la simulación es un hiperrectánculo con un largo $W$, alto $H$ y profundidad $D$. Es posible crear simulaciones con o sin condiciones de contorno.
 
-            El universo, una vez creado, no puede ser modificado (ni sus dimensiones, ni parámetros, ni entidades), por lo que al avanzar la simulación, se van creando fotos del universo para cada tiempo específico.
+            Una vez creado, el universo no puede ser modificado (ni sus dimensiones, ni parámetros, ni entidades), por lo que al avanzar la simulación equivale a crear fotos del universo para cada tiempo específico.
 
 
             \begin{figure}[H]
@@ -204,7 +211,12 @@
                 \label{fig:universe_implementation}
             \end{figure}
 
-        \subsection{Grid}
+        \subsection{Grilla}
+
+            \textit{Grid} es la implementación de \textit{Cell index method}. \\
+            Para construir una \textit{Grid}, es necesario especificar cuantas \textit{Cell} se deben construir por eje. A su vez es necesario especificar cual es el largo, ancho y alto de cada una de esas celdas. \\
+            Internamente, \textit{Grid} se encarga de crear todas las \textit{Cell} necesarias, de asignar cada \textit{Entity} a la \textit{Cell} que le corresponde y asignarle todos los vecinos a cada \textit{Cell}. \\
+            De esta manera, dada una \textit{Entity}, es posible determinar a que celda pertenece y acceder a las celdas vecinas para buscar aquellas entidades que estén a una determinada distancia sin necesidad de iterar por todas las entidades.
 
             \begin{figure}[H]
                 \centering
@@ -213,9 +225,19 @@
                 \label{fig:grid_implementation}
             \end{figure}
 
-        \subsection{Entity}
+        \subsection{Entidades}
 
-            Cada agente es representado como un punto sin volumen. Está ubicado en un cierto punto del universo ($x, y$), comparte la misma magnitud de velocidad con el resto de los agentes pero cada uno tiene su própio ángulo.
+            Todos los agentes, no importa si son depredadores o no, son representados utilizando la clase \textit{Entity}. \\
+            Cada entidad cuenta con las siguientes propiedades:
+            \begin{itemize}
+                \item id: Identificador de la entidad. Son únicos.
+                \item type: Determina el tipo de la entidad.
+                \item radius: Determina el radio de la entidad.
+                \item position: Posición $(x, y, z)$ en el espacio.
+                \item velocity: Velocidad $(v_x, v_y, v_z)$ en el espacio.
+            \end{itemize}
+
+            A su vez, cada \textit{Entity} cuenta con una manera de poder calcular la distancia (desde los bordes) a otra \textit{Entity} y de poder determinar si otra \textit{Entity} está en su rango de visión.
 
             \begin{figure}[H]
                 \centering
@@ -224,15 +246,31 @@
                 \label{fig:entity_implementation}
             \end{figure}
 
-        \subsection{Rule}
+        \subsection{Reglas}
+            Para la implementación de las reglas, se optó por tener una clase abstracta base \textit{Rule}, la cual cuenta con un factor que se le aplicará para aumentar o reducir su influencia. Tiene también un método público que es invocado por el algoritmo de simulación mediante el cual recibe todo lo necesario para que las implementaciones concretas puedan aplicarse.
 
+            Cada implementación debe implementar los métodos:
+            \begin{itemize}
+                \item \textit{appliesTo}: Define a que tipos de entidades aplica la regla.
+                \item \textit{doApply}: Aplica la regla y devuelve el ajuste de velocidad.
+            \end{itemize}
+
+            Existe otra clase abstracta llamada \textit{FlockRule} cuya finalidad es simplificar y agrupar aquellas reglas que apliquen únicamente para las entidades de tipo \textit{Boid}, ignorando al resto de las entidades. Sus implementaciones conforman al set básico de reglas propuesto por \textit{Reynolds}.
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=0.8\textwidth]{../imgs/rules}
                 \caption{Reglas}
                 \label{fig:rules_implementation}
             \end{figure}
-        \subsection{Simulation}
+        \subsection{Simulación}
+
+            \textit{Simulation} es la clase encargada de realizar la simulación.
+            Internamente se ocupa de:
+            \begin{itemize}
+                \item Aplicar todas las reglas configuradas.
+                \item Limitar la velocidad de todas las entidades ya que de ser únicamente por las reglas, la velocidad de cada \textit{Entity} tiende a aumentar.
+                \item Mover aquellas entidades que se hayan escapado del universo en caso de haber condiciones de contorno.
+            \end{itemize}
 
             \begin{figure}[H]
                 \centering
@@ -241,94 +279,17 @@
                 \label{fig:simulation_implementation}
             \end{figure}
 
-        \subsection{Detalles de Implementación}
+        \subsection{Optimizaciones}
+            \subsubsection{Cálculo de vecinos}
+                Para el cáclulo de vecinos se utiliza el método llamado \textit{Cell Index Method}. El mismo consiste en subdividir el espacio de simulación (Universo) en celdas de un determinado tamaño. Debido a que cada agente pertenece a una única celda, el método permite reducir el costo de búsqueda de vecinos de $N^2$ a un número más cercano a $N$. Dado que las dimensiones del universo son más de un orden de magnitud mayores que la distancia de búsqueda, se decidió fijar una cantidad de celdas determinadas para cada eje.
 
-            \subsubsection{Cell Index Method}
+            \subsubsection{Cálculo de ángulo entre vectores}
+                Se descubrió que el cáclulo del ángulo entre dos vectores era la operación que más tiempo demoraba, por lo que se implementó la función $acos$ propuesta por NVidia\cite{FastAcos}
 
-                Debido al método para calcular la posición de un agente en el tiempo $t + 1$, se puede ver que depende únicamente del estado del universo en el tiempo $t$. Gracias a esa condición, se decide ejecutar en paralelo la actualización de la posición de cada agente en el universo logrando así una mejora considerable a la hora de realizar las simulaciones.
+    \section{[TODO] Resultados}
+        Si bien la implementación realizada soporta simular con o sin condiciones de contorno, se decidió que únicamente se analizarán escenarios con condiciones de contorno.
 
-            \subsubsection{Función \textit{atan2}}
-
-                Luego analizar el costo de ejecutar una simulación con un gran número de agentes ($N > 1000$), se descubre que prácticamente la mitad del tiempo de ejecución se encuentra en el cáclulo la arcotangente. Se optó por reemplazar la implementación exacta de \textit{atan2} por una alternativa \cite{FastAcos} que utiliza tablas pre-calculadas de valores, ofreciendo tiempos de ejecución 13 veces más rápidos que la función original.
-
-                Si bien el uso de tablas para el cálculo del arcotangente genera imprecisiones en el resultado, la implementación elegida ofrece un error promedio de $0.00004$ que, gracias a la incorporación del ruido $\eta$ dentro del cálculo del ángulo de cada agente, podemos tomarla como parte de ese ruido.
-
-    \section{Resultados}
-
-        Si bien existe una gran cantidad de posibilidades a la hora de simular, se decide utilizar únicamente simulaciones en las que el universo contiene condiciones de contorno.
-
-        \subsection{Reproducción de resultados del paper}
-            \subsubsection{Velocidad absouluta normalizada contra ruido}
-
-                % \begin{figure}[H]
-                %     \centering
-                %     \includegraphics[width=\textwidth]{img/noise_plot_n_1000_v_0_3}
-                %     \caption{Evolución de $V_a$ vs. $\eta$ con $t=1000$; $v=0.3$}
-                %     \label{fig:noise_plot_n_1000_v_0_3}
-                % \end{figure}
-
-                Se puede observar, con márgenes de error bajo, que para densidades bajas así como también como altas de agentes dentro del universo, la velocidad absoluta normalizada (o el índice de polarización) tiende a 1 (alineamiento completo) cuando no hay ruido y tiende a 0 (desorden) a medida que se incrementa el mismo.
-
-                % \begin{figure}[H]
-                %     \centering
-                %     \includegraphics[width=\textwidth]{img/noise_plot_n_1500_v_0_0_3.png}
-                %     \caption{Evolución de $V_a$ vs. $\eta$ con $t=1500$; $v=0.03$}
-                %     \label{fig:noise_plot_n_1500_v_0_0_3}
-                % \end{figure}
-
-                Al utilizar una velocidad menor, se puede observar que la progresión es muy similar a la del caso anterior, dando un indicio de que con mayor tiempo de simulación, se puede lograr resultados similares.
-
-            \subsubsection{Velocidad absoluta normalizada contra densidad}
-
-            Sabiendo que la densidad del universo es
-
-            \begin{equation}
-                \rho = \frac{N}{L^2}
-            \end{equation}
-
-            donde $N$ es el número de agentes y $L$ es el lado del universo.
-
-            % \begin{figure}[H]
-            %     \centering
-            %     \includegraphics[width=\textwidth]{{{img/density_v0.5_eta1.0_v0.05}}}
-            %     \caption{Evolución de $V_a$ vs. $\rho$ con $\eta=1.0$; $v=0.05$; $L=20.0$; $t=500s$}
-            %     \label{fig:density_v0.5_eta1.0_v0.05}
-            % \end{figure}
-
-            Se puede observar que la densidad afecta directamente a la velocidad media normalizada del universo de manera que valores de $\rho$ mayores a $1.0$ tienden a alinearse en un tiempo considerablemente menor que aquellos con $\rho$ menores a $1.0$.
-
-        \subsection{Velocidad absoluta normalizada contra tiempo ($\eta$ fijo)}
-
-            % \begin{figure}[H]
-            %     \centering
-            %     \includegraphics[width=\textwidth]{img/time_plot_eta_0_1_t_1000_v_0_3}
-            %     \caption{Evolución de $V_a$ vs. $t$ con $t=1000$; $v=0.3$ y $\eta=0.1$}
-            %     \label{fig:time_plot_eta_0_1_t_1000_v_0_3}
-            % \end{figure}
-
-            % \begin{figure}[H]
-            %     \centering
-            %     \includegraphics[width=\textwidth]{img/time_plot_eta_0_1_t_100_v_0_3}
-            %     \caption{Evolución de $V_a$ vs. $t$ con $t=100$; $v=0.3$ y $\eta=0.1$}
-            %     \label{fig:time_plot_eta_0_1_t_100_v_0_3}
-            % \end{figure}
-
-            Se utilizan valores de referencia obtenidos del paper en donde cada caso tiene una densidad cercana a $4$ y se puede observar que la progresión del alineamiento del sistema no es directamente proporcional a la densidad sino que parece ser más lenta cuantos más agentes hay en el universo.
-
-        \subsection{Velocidad absoluta normalizada contra tiempo ($\eta$ variable)}
-
-            % \begin{figure}[H]
-            %     \centering
-            %     \includegraphics[width=\textwidth]{{{img/noise_over_time_N400_L20_T1000_V0.3}}}
-            %     \caption{Evolución de $V_a$ vs. $t$ con $t=1000$; $N=400$; $v=0.3$ y $L=20.0$}
-            %     \label{fig:noise_over_time_N400_L20_T1000_V0.3}
-            % \end{figure}
-
-            Se puede observar que aquellos escenarios en donde $\eta$ es menor a $1.0$, el alineamiento del universo se logra en un tiempo notablemente menor que en el resto de los escenarios.
-
-    \section{Conclusiones}
-            Luego de el análisis de los resultados podemos concluir que ante la ausencia de ruido $\eta$ el sistema tiende a alinearse, mientras que con existencia de ruido, este alineamiento puede llegar a no producirse ($\eta$ alto).
-
-            Por otro lado, se puede observar que la densidad $\rho$ no es el único factor que incide en la velocidad de alineamiento del sistema, existen otros factores como la configuración inicial y el radio de interacción que tienen un gran efecto en la evolución del sistema.
+    \section{[TODO] Conclusiones}
+            TODO
     \clearpage \printbibliography
 \end{document}
