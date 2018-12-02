@@ -16,7 +16,12 @@ class Cell {
     }
 
     fun getNear(entity: Entity, distance: Double): List<Entity> {
-        return entities.filter { (it.distance(entity) <= distance) && (it.id != entity.id) }
+        return neighbours
+            .fold(entities.toMutableList()) { acc, neighbour ->
+                acc.addAll(neighbour.entities)
+                acc
+            }
+            .filter { (it.distance(entity) <= distance) && (it.id != entity.id) }
     }
 
 }
