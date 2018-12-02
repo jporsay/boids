@@ -297,13 +297,13 @@
 
             De esa manera, aquellos \textit{boids} que se encuentren en el mismo área de la simulación tendrán un color similar, lo que permite tener una idea de la distribución de las entidades dentro del universo.
 
-            [TODO] Imagen de la visualización
-
-    \section{[TODO] Resultados}
+    \section{Resultados}
         Si bien la implementación realizada soporta simular con o sin condiciones de contorno, se decidió que únicamente se analizarán escenarios con condiciones de contorno.
 
+        A menos que se indique lo contrario, se utilizaron $10$ simulaciones para obtener los errores de cada gráfico.
+
         \subsection{Sin boids especiales}
-            Para las simulaciones sin boids especiales, se estudia el comportamiento del sistema utilizando los siguientes parámetros como base:
+            Para las simulaciones sin boids especiales, se estudia el comportamiento del sistema utilizando los siguientes parámetros:
             % \begin{center}
                 \begin{table}[h]
                     \centering
@@ -340,7 +340,7 @@
                 \end{table}
             % \end{center}
 
-            \subsubsection{[TODO] Polarización: Alineamiento}
+            \subsubsection{Polarización: Alineamiento}
                 Se varía el factor de la regla de \textit{alineamiento} para ver su impacto en la polarización del sistema.
 
                 \begin{figure}[H]
@@ -350,8 +350,9 @@
                     \label{fig:polarization_a}
                 \end{figure}
 
-                [TODO: Escribir observaciones]
-                \subsubsection{[TODO] Polarización: Cohesión}
+                Se puede observar que variar el factor de la regla de \textit{polarización} tiene uno de dos resultados: Si el factor es $0$ (regla desactivada), el sistema se polariza; cualquier otro valor no afecta en mayor medida la rapidez con la que el sistema se polariza.
+
+                \subsubsection{Polarización: Cohesión}
                 Se varía el factor de la regla de \textit{cohesión} para ver su impacto en la polarización del sistema.
 
                 \begin{figure}[H]
@@ -361,9 +362,11 @@
                     \label{fig:polarization_c}
                 \end{figure}
 
-                [TODO: Escribir observaciones]
+                Se puede observar que cuanto menos peso tenga la regla de polarización (factor tendiendo a cero), el sistema tiende a polarizarse con mayor rapidez, teniendo a la más rápida aquella que tiene la regla de \textit{cohesión} apagada.
 
-                \subsubsection{[TODO] Polarización: Separación}
+                Ésto se genera ya que cada \textit{boid} no busca acercarse al centro de masa, por lo que como están las reglas de \textit{polarización} y \textit{separación} activadas, al estar cerca de otro \textit{boid} se alinea con el mismo.
+
+                \subsubsection{Polarización: Separación}
                 Se varía el factor de la regla de \textit{separación} para ver su impacto en la polarización del sistema.
 
                 \begin{figure}[H]
@@ -373,9 +376,14 @@
                     \label{fig:polarization_s}
                 \end{figure}
 
-                [TODO: Escribir observaciones]
-            \subsection{[TODO] Con boids especiales}
-                Se agregan $3$ boids especiales y se estudia la variación del factor de la regla "\textit{Tendencia a}"
+                Se puede observar que cuanto menos efecto tiene la regla de separación ($t \to 0$), más lento polariza el sistema.
+
+                Ésto se debe a que, como cada \textit{boid} tiende a ir al centro de masa debido a la regla de \textit{cohesión},
+                se termina generando una superposición de boids, por lo que el volúmen de influencia de esa bandada se reduce a un volúmen de influencia similar al de un único \textit{boid}
+                y dado que el volúmen del universo es grande, la probabilidad de que dos boids se crucen es baja, por lo que toma más tiempo llegar a la polarización.
+
+            \subsection{Con boids especiales}
+                Se agregan $3$ boids especiales y se estudia la variación del factor de la regla "\textit{Tendencia a}".
 
                 \begin{figure}[H]
                     \centering
@@ -384,9 +392,14 @@
                     \label{fig:polarization_s}
                 \end{figure}
 
-                [TODO]
+                Dependiendo del factor de la regla, los boids se verán atraídos ($t > 0$) o repelidos ($t < 0$) de cada una de las entidades especiales.
 
-    \section{[TODO] Conclusiones}
-            TODO
+                Se puede observar que incorporar éstas entidades especiales dentro del universo no permite que se pueda llegar a una polarización cercana a $1$, manteniéndose cerca de $0.9$.
+
+    \section{Conclusiones}
+            Luego del análisis de los resultados, podemos concluir que a la hora de buscar una polarización más veloz del sistema basta con desactivar la regla de \textit{cohesión} para lograrlo.
+            Sin embargo al hacerlo se pierde el comportamiento de bandada, haciendo que la simulación no pueda ser una buena representación de un sistema real.
+
+            Por otro lado, la configuración de los parámetros iniciales de la simulación como así también los factores de las reglas cambian drásticamente el funcionamiento del sistema.
     \clearpage \printbibliography
 \end{document}
