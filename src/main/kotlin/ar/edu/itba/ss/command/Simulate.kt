@@ -20,7 +20,7 @@ import java.util.regex.Pattern
 
 class Simulate : CliktCommand(help = "Simulate a given universe") {
 
-    private val secondsDefault = 60
+    private val secondsDefault = 240
     private val seconds: Int by option(help = "Seconds that we should simulate. Default $secondsDefault").int().default(secondsDefault)
 
     private val loop: Boolean by option(help = "Loop contours").flag()
@@ -55,16 +55,16 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     private fun suite() : List<RuleSet> {
         val result = mutableListOf<RuleSet>()
         if (peaceSuite) {
-            val range = listOf(0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+            val range = listOf(0.0, 0.1, 0.2, 0.3, 0.4, 0.5)
             result.addAll(range.map { RuleSet("a_$it", alignmentFactor = it) })
             result.addAll(range.map { RuleSet("c_$it", cohesionFactor = it) })
             result.addAll(range.map { RuleSet("s_$it", separationFactor = it) })
 
-            //val aDetail = listOf(0.04, 0.08, 0.12, 0.16)
-            //result.addAll(aDetail.map { RuleSet("a_$it", alignmentFactor = it) })
+//            val aDetail = listOf(0.04, 0.08, 0.12, 0.16)
+//            result.addAll(aDetail.map { RuleSet("a_$it", alignmentFactor = it) })
         }
         if (caosSuite) {
-            val range = listOf(-1.0, -0.8, -0.6, -0.4, -0.2, 0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+            val range = listOf(-0.5, -0.4, -0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5)
             result.addAll(range.map { RuleSet("t_$it", boidTendencyToSpecialFactor = it) })
         }
         if (!peaceSuite && !caosSuite) {
@@ -90,12 +90,12 @@ class Simulate : CliktCommand(help = "Simulate a given universe") {
     }
 
     class RuleSet(val name: String,
-                       alignmentFactor: Double = 0.3,
-                       cohesionFactor: Double = 0.3,
-                       separationFactor: Double = 0.3,
-                       boidTendencyToSpecialFactor: Double = -0.8,
-                       specialTendencyToBoidFactor: Double = 0.2,
-                       boundaryFactor: Double = 0.3
+                       alignmentFactor: Double = 0.25,
+                       cohesionFactor: Double = 0.25,
+                       separationFactor: Double = 0.25,
+                       boidTendencyToSpecialFactor: Double = -0.25,
+                       specialTendencyToBoidFactor: Double = 0.25,
+                       boundaryFactor: Double = 0.25
     ) {
         val rules = listOf(
             Alignment(alignmentFactor),
