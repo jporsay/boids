@@ -92,15 +92,15 @@
         \begin{frame}
             \frametitle{Visualización: Color}
             \begin{columns}
-                \column{0.5\textwidth}
+                \column{0.4\textwidth}
                 Color depende de la posición:
                 \begin{itemize}
-                    \item $R = 0.2 + (position.x / width) * 0.8$
-                    \item $G = 0.2 + (position.y / height) * 0.8$
-                    \item $B = 0.2 + (position.z / depth) * 0.8$
+                    \item $\mathbf{R} = 0.2 + (position.\mathbf{x} / width) * 0.8$
+                    \item $\mathbf{G} = 0.2 + (position.\mathbf{y} / height) * 0.8$
+                    \item $\mathbf{B} = 0.2 + (position.\mathbf{z} / depth) * 0.8$
                 \end{itemize}
-                \column{0.5\textwidth}
-                    TODO: Imagen de visualización
+                \column{0.6\textwidth}
+                \includegraphics[width=0.6\paperwidth,height=0.45\paperwidth,keepaspectratio]{{../imgs/universe__id_0772.frame0}.png}
             \end{columns}
         \end{frame}
 
@@ -165,7 +165,7 @@
                 32 m/s
             \end{block}
             \begin{block}{Velocidad máxima: especiales}
-                64 m/s
+                32 m/s
             \end{block}
         \end{frame}
 
@@ -192,14 +192,95 @@
             \frametitle{Polarización: Alineamiento}
             \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/polarization_a}.png}
         \end{frame}
+
+        \begin{frame}[standout]
+            \frametitle{Alineamiento: a = 0.0}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
+                        {{../anims/universe__id_0772.a_0.0.sim}.png}
+                    }
+                    {../anims/universe__id_0772.a_0.0.sim.mov}
+                };
+            \end{tikzpicture}
+        \end{frame}
+
+        \begin{frame}[standout]
+            \frametitle{Alineamiento: a = 0.5}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
+                        {{../anims/universe__id_0772.a_0.5.sim}.png}
+                    }
+                    {../anims/universe__id_0772.a_0.5.sim.mov}
+                };
+            \end{tikzpicture}
+        \end{frame}
+
         \begin{frame}
             \frametitle{Polarización: Cohesión}
             \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/polarization_c}.png}
         \end{frame}
+
+        \begin{frame}[standout]
+            \frametitle{Cohesión: c = 0.0}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
+                        {{../anims/universe__id_0772.c_0.0.sim}.png}
+                    }
+                    {../anims/universe__id_0772.c_0.0.sim.mov}
+                };
+            \end{tikzpicture}
+        \end{frame}
+
+        \begin{frame}[standout]
+            \frametitle{Cohesión: c = 0.5}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
+                        {{../anims/universe__id_0772.c_0.5.sim}.png}
+                    }
+                    {../anims/universe__id_0772.c_0.5.sim.mov}
+                };
+            \end{tikzpicture}
+        \end{frame}
+
         \begin{frame}
             \frametitle{Polarización: Separación}
             \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/polarization_s}.png}
         \end{frame}
+
+        \begin{frame}[standout]
+            \frametitle{Separación: s = 0.0}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
+                        {{../anims/universe__id_0772.s_0.0.sim}.png}
+                    }
+                    {../anims/universe__id_0772.s_0.0.sim.mov}
+                };
+            \end{tikzpicture}
+        \end{frame}
+
+        \begin{frame}[standout]
+            \frametitle{Separación: s = 0.5}
+            \begin{tikzpicture}[remember picture,overlay]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
+                        {{../anims/universe__id_0772.s_0.5.sim}.png}
+                    }
+                    {../anims/universe__id_0772.s_0.5.sim.mov}
+                };
+            \end{tikzpicture}
+        \end{frame}
+
         \begin{frame}
             \frametitle{Polarización: Tendencia a}
             \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/polarization_t}.png}
@@ -208,12 +289,13 @@
             \frametitle{1 - Polarización: Tendencia a}
             \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/polarization_t2}.png}
         \end{frame}
+
         \begin{frame}[standout]
             \frametitle{Tendencia a: t = 0.4 (2 boids especiales)}
             \begin{tikzpicture}[remember picture,overlay]
-                \node[at=(current page.center)] {
-                    \movie[width=0.55\paperwidth,height=0.55\paperwidth,showcontrols,autostart]
-                    {\includegraphics[width=0.55\paperwidth,height=0.55\paperwidth]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
                         {../anims/universe__id_6456_t_0_4.png}
                     }
                     {../anims/universe__id_6456_t_0_4.mov}
@@ -224,9 +306,9 @@
         \begin{frame}[standout]
             \frametitle{Tendencia a: t = -0.4 (2 boids especiales)}
             \begin{tikzpicture}[remember picture,overlay]
-                \node[at=(current page.center)] {
-                    \movie[width=0.55\paperwidth,height=0.55\paperwidth,showcontrols,autostart]
-                    {\includegraphics[width=0.55\paperwidth,height=0.55\paperwidth]
+                \node[anchor=south] at (current page.south) {
+                    \movie[width=0.84\paperwidth,height=0.63\paperwidth,showcontrols,autostart]
+                    {\includegraphics[width=0.84\paperwidth,height=0.63\paperwidth]
                         {../anims/universe__id_6456_t_-0_4.png}
                     }
                     {../anims/universe__id_6456_t_-0_4.mov}
@@ -239,6 +321,8 @@
         \begin{itemize}
             \item La regla más importante para polarización: \textbf{Alineamiento}.
             \item Desactivar la regla de \textbf{Cohesión} acelera la polarización.
+            \item Desactivar la regla de \textbf{Separación} hace que los boids se unan puntualmente.
+            \item Una alta \textbf{Separación} genera bandadas grandes con velocidad media mayor a sin \textbf{Cohesión}.
             \item Regla de \textbf{Tendencia a} cambia en gran medida el comportamiento de los \textit{boids}.
         \end{itemize}
     \end{frame}
