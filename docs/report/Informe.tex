@@ -387,19 +387,36 @@
 
                 \begin{figure}[H]
                     \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/tendency_to}.png}
+                    \caption{Comportamiento: Tendencia a acercarse ($t > 0$)}
+                    \label{fig:tendency_to}
+                \end{figure}
+
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/tendency_away}.png}
+                    \caption{Comportamiento: Tendencia a acercarse ($t < 0$)}
+                    \label{fig:tendency_away}
+                \end{figure}
+
+                Se puede observar como afecta el signo del factor para la regla "\textit{Tendencia a}" el comportamiento de la bandada. Con $t > 0$ la bandada toma a la entidad especial como un líder de bandada, mientras que con $t < 0$, la bandada reacciona como si fuese un depredador.
+
+                \begin{figure}[H]
+                    \centering
                     \includegraphics[width=0.8\linewidth]{{../imgs/polarization_t}.png}
-                    \caption{Polarización: variando Tendencia especial a boid}
+                    \caption{Polarización: variando "Tendencia a"}
                     \label{fig:polarization_t}
                 \end{figure}
 
                 \begin{figure}[H]
                     \centering
                     \includegraphics[width=0.8\linewidth]{{../imgs/polarization_t2}.png}
-                    \caption{1 - Polarización: variando Tendencia especial a boid}
+                    \caption{1 - Polarización: variando "Tendencia a"}
                     \label{fig:polarization_t2}
                 \end{figure}
 
                 Se puede observar que ambos extremos ($-0.4$ y $0.4$) en los que la regla de escapar o acercarse a los \textit{boids} especiales se encuentra con mayor intensidad son los que menos logran polarizar debido a las perturbaciones introducidas por éstas entidades nuevas.
+                Con $t > 0$, se puede lograr una polarización del sistema similar a o mejor que sin la existencia de entidades especiales debido a el comportamiento de liderazgo que se genera. Mientras que con $t < 0$, es posible hacer que el sistema no llegue a polarizarse.
 
     \section{Conclusiones}
             Luego del análisis de los resultados, podemos concluir que a la hora de buscar una polarización más veloz del sistema basta con desactivar la regla de \textit{cohesión} para lograrlo.
