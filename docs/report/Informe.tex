@@ -290,9 +290,9 @@
             Para poder dar una idea de la posición en un espacio que cuenta con tres dimensiones, se decidió utilizar la posición de cada \textit{boid} para determinar el color que el mismo tendrá siguiendo las siguientes reglas:
 
             \begin{itemize}
-                \item $R = position.x / width$
-                \item $G = position.y / height$
-                \item $B = position.z / depth$
+                \item $R = 0.2 + (position.x / width) * 0.8$
+                \item $G = 0.2 + (position.y / height) * 0.8$
+                \item $B = 0.2 + (position.z / depth) * 0.8$
             \end{itemize}
 
             De esa manera, aquellos \textit{boids} que se encuentren en el mismo área de la simulación tendrán un color similar, lo que permite tener una idea de la distribución de las entidades dentro del universo.
@@ -388,13 +388,18 @@
                 \begin{figure}[H]
                     \centering
                     \includegraphics[width=0.8\linewidth]{{../imgs/polarization_t}.png}
-                    \caption{Polarización variando Tendencia especial a boid}
-                    \label{fig:polarization_s}
+                    \caption{Polarización: variando Tendencia especial a boid}
+                    \label{fig:polarization_t}
                 \end{figure}
 
-                Dependiendo del factor de la regla, los boids se verán atraídos ($t > 0$) o repelidos ($t < 0$) de cada una de las entidades especiales.
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.8\linewidth]{{../imgs/polarization_t2}.png}
+                    \caption{1 - Polarización: variando Tendencia especial a boid}
+                    \label{fig:polarization_t2}
+                \end{figure}
 
-                Se puede observar que incorporar éstas entidades especiales dentro del universo no permite que se pueda llegar a una polarización cercana a $1$, manteniéndose cerca de $0.9$.
+                Se puede observar que ambos extremos ($-0.4$ y $0.4$) en los que la regla de escapar o acercarse a los \textit{boids} especiales se encuentra con mayor intensidad son los que menos logran polarizar debido a las perturbaciones introducidas por éstas entidades nuevas.
 
     \section{Conclusiones}
             Luego del análisis de los resultados, podemos concluir que a la hora de buscar una polarización más veloz del sistema basta con desactivar la regla de \textit{cohesión} para lograrlo.
