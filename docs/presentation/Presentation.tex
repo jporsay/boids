@@ -9,16 +9,28 @@
     \frame{\titlepage}
 
     \section{Fundamentos}
+    \begin{frame}
+        \frametitle{Boids: Reglas}
+        \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/rules_overview}.png}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Boids: Vecinos}
+        \begin{columns}
+            \column{0.5\textwidth}
+            \begin{itemize}
+                \item Debe estar a menos de \textit{distance}
+                \item Debe estar posicionado a menos de \textit{angle} del vector velocidad.
+            \end{itemize}
+            \column{0.5\textwidth}
+            \includegraphics[width=\linewidth,height=0.5\textheight,keepaspectratio]{{../imgs/neighbourhood}.png}
+        \end{columns}
+    \end{frame}
     \subsection{Algoritmo}
     \begin{frame}
         \frametitle{Boids: Algoritmo}
         \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/algo_boids}.png}
     \end{frame}
     \subsection{Reglas básicas}
-    \begin{frame}
-        \frametitle{Boids: Reglas}
-        \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/rules_overview}.png}
-    \end{frame}
 
     \begin{frame}
         \frametitle{Regla: Alineamiento}
@@ -74,10 +86,6 @@
             \end{block}
             \begin{block}{Avance de simulación y animación}
                 $\Delta t = \frac{1}{60}$ (s)
-            \end{block}
-
-            \begin{block}{Método de actualización}
-                Beeman modificado (fuerza depende de $v_t$)
             \end{block}
         \end{frame}
 
