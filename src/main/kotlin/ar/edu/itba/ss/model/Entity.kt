@@ -25,7 +25,8 @@ class Entity(val id: Int, val type: Type, val position: Vector3D, val velocity: 
             Added some extra checks just in case
          */
         val maxVisionAngle = PI * 0.75
-        var angle = angle(velocity, other.velocity)
+        val otherVector = position.subtract(other.position).normalize()
+        var angle = angle(velocity.normalize(), otherVector)
         if (angle < 0) angle += 2 * PI
         if (angle > 2 * PI) angle -= 2 * PI
         return (angle < maxVisionAngle) || (angle > 1.25 * PI)
