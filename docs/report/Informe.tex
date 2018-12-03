@@ -2,7 +2,7 @@
 
 \usepackage{../inc/ssarticle}
 
-\title{{\centering\huge {Agentes auto-propulsados: Boids}}}
+\title{{\centering\huge {Boids}}}
 
 \begin{document}
 \begin{titlingpage}
@@ -17,7 +17,7 @@
 
     \section{Fundamentos}
         \subsection{Boids}
-            Reynolds propuso un modelo para simular bandadas de agentes que se basa en la aplicación a cada uno de los agentes una lista determinada de reglas. Las mismas terminan influenciando como es que cada agente se mueve y como interactua con lo que lo rodea.
+            Reynolds propuso un modelo para simular bandadas de agentes que se basa en la aplicación de una lista determinada de reglas a cada agente. Las mismas influencian como cada agente se mueve y como interactua con lo que lo rodea.
 
             A alto nivel, el funcionamiento del algoritmo es el siguiente:
 
@@ -52,11 +52,13 @@
                 \label{fig:neighbourhood}
             \end{figure}
 
+            \pagebreak
+
             \subsubsection{Reglas básicas}
 
             Reynolds propone tres reglas básicas para poder generar un comportamiento de bandada.
 
-            Unicamente los \textit{boids} que están dentro del círculo afectan al \textit{boid}.
+            Unicamente los \textit{boids} que están dentro del área de interacción afectan al \textit{boid}.
 
             \begin{center}
                 \begin{table}[h]
@@ -103,6 +105,8 @@
                 \end{algorithmic}
             \end{algorithm}
 
+            \pagebreak
+
             La regla de \textbf{separación} hace que cada \textit{boid} busque estar a una cierta distancia de cada uno de sus vecinos. A diferencia de las reglas anteriores, un boid es considerado vecino si está a una distancia menor que la distancia de interacción que se aplica para el resto de las reglas:
 
             \begin{algorithm}
@@ -123,11 +127,11 @@
                 \end{algorithmic}
             \end{algorithm}
 
-            \pagebreak
             \subsubsection{Reglas extendidas}
                 A demás de las reglas básicas, en el trabajo se implementaron un conjunto de reglas extras que buscan agregar complejidad al sistema.
 
-                La regla \textbf{TendencyTo} es una regla que puede interpretarse de dos maneras dependiendo del factor que se le aplique. Un factor positivo hace que las entidades se acerquen a otras de un tipo específico, mientras que un factor negativo hace que se alejen:
+                La regla \textbf{TendencyTo} es una regla que puede interpretarse de dos maneras dependiendo del factor que se le aplique.
+                Un factor positivo hace que las entidades se acerquen a otras de un tipo específico, mientras que un factor negativo hace que se alejen:
 
                 \begin{algorithm}
                     \caption{TendencyTo}\label{pseudo:tendency_to}
@@ -144,9 +148,10 @@
                     \end{algorithmic}
                 \end{algorithm}
 
-                La regla \textbf{Boundary} busca hacer que si un \textit{boid} se escapa del universo sin condiciones de contorno, el mismo vuelva de una manera "orgánica" sin tener saltos abruptos en la velocidad:
-
                 \pagebreak
+
+                La regla \textbf{Boundary} busca hacer que si un \textit{boid} se escapa del universo sin condiciones de contorno, el mismo vuelva de una manera \textit{orgánica},
+                sin tener saltos abruptos en la velocidad:
 
                 \begin{algorithm}
                     \caption{Boundary}\label{pseudo:boundary}
@@ -182,6 +187,8 @@
                         \EndProcedure
                     \end{algorithmic}
                 \end{algorithm}
+
+        \pagebreak
 
         \subsection{Polarización}
             Polarización es un parámetro que permite tener un indicador sobre el estado de alineamiento de las velocidades de los \textit{boids} dentro del universo (ignorando los depredadores). La misma adquiere valores entre $0$ (desorden, cada \textit{boid} se mueve en una dirección distinta al resto) y $1$ (orden, todos los \textit{boids} se mueven en la misma dirección).
@@ -245,7 +252,7 @@
             \end{figure}
 
         \subsection{Reglas}
-            Para la implementación de las reglas, se optó por tener una clase abstracta base \textit{Rule}, la cual cuenta con un factor que se le aplicará para aumentar o reducir su influencia. Tiene también un método público que es invocado por el algoritmo de simulación mediante el cual recibe todo lo necesario para que las implementaciones concretas puedan aplicarse.
+            Para la implementación de las reglas, se opta por tener una clase abstracta base \textit{Rule}, la cual cuenta con un factor que se le aplicará para aumentar o reducir su influencia. Tiene también un método público que es invocado por el algoritmo de simulación mediante el cual recibe todo lo necesario para que las implementaciones concretas puedan aplicarse.
 
             Cada implementación debe implementar los métodos:
             \begin{itemize}
@@ -260,6 +267,7 @@
                 \caption{Reglas}
                 \label{fig:rules_implementation}
             \end{figure}
+        \pagebreak
         \subsection{Simulación}
 
             \textit{Simulation} es la clase encargada de realizar la simulación.
@@ -279,15 +287,17 @@
 
         \subsection{Optimizaciones}
             \subsubsection{Cálculo de vecinos}
-                Para el cáclulo de vecinos se utiliza el método llamado \textit{Cell Index Method}. El mismo consiste en subdividir el espacio de simulación (Universo) en celdas de un determinado tamaño. Debido a que cada agente pertenece a una única celda, el método permite reducir el costo de búsqueda de vecinos de $N^2$ a un número más cercano a $N$. Dado que las dimensiones del universo son más de un orden de magnitud mayores que la distancia de búsqueda, se decidió fijar una cantidad de celdas determinadas para cada eje.
+                Para el cáclulo de vecinos se utiliza el método llamado \textit{Cell Index Method}. El mismo consiste en subdividir el espacio de simulación (Universo) en celdas de un determinado tamaño. Debido a que cada agente pertenece a una única celda, el método permite reducir el costo de búsqueda de vecinos de $N^2$ a un número más cercano a $N$. Dado que las dimensiones del universo son más de un orden de magnitud mayores que la distancia de búsqueda, se decide fijar una cantidad de celdas determinadas para cada eje.
 
             \subsubsection{Cálculo de ángulo entre vectores}
-                Se descubrió que el cáclulo del ángulo entre dos vectores era la operación que más tiempo demoraba, por lo que se implementó la función $acos$ propuesta por NVidia\cite{FastAcos}.
+                El cáclulo del ángulo entre dos vectores era la operación que más tiempo demoraba, por lo que se implementa la función $acos$ propuesta por NVidia\cite{FastAcos}.
+
+        \pagebreak
 
         \subsection{Visualización}
             Para realizar las animaciones y visualizaciones de las simulaciones se utiliza \textit{Ovito}.
 
-            Para poder dar una idea de la posición en un espacio que cuenta con tres dimensiones, se decidió utilizar la posición de cada \textit{boid} para determinar el color que el mismo tendrá siguiendo las siguientes reglas:
+            Para poder dar una idea de la posición en un espacio que cuenta con tres dimensiones, se decide utilizar la posición de cada \textit{boid} para determinar el color que el mismo tendrá siguiendo las siguientes reglas:
 
             \begin{itemize}
                 \item $R = 0.2 + (position.x / width) * 0.8$
@@ -297,10 +307,19 @@
 
             De esa manera, aquellos \textit{boids} que se encuentren en el mismo área de la simulación tendrán un color similar, lo que permite tener una idea de la distribución de las entidades dentro del universo.
 
-    \section{Resultados}
-        Si bien la implementación realizada soporta simular con o sin condiciones de contorno, se decidió que únicamente se analizarán escenarios con condiciones de contorno.
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.7\textwidth]{../imgs/ovito_viz}
+                \caption{Ovito: Visualización}
+                \label{fig:ovito_viz}
+            \end{figure}
 
-        A menos que se indique lo contrario, se utilizaron $10$ simulaciones para obtener los errores de cada gráfico.
+            A demás del color, se utiliza la funcionalidad de \textit{displacement vectors} de \textit{Ovito} para poder visualizar la dirección de movimiento de cada agente.
+
+    \section{Resultados}
+        Si bien la implementación realizada soporta simular con o sin condiciones de contorno, se decide que únicamente se analizarán escenarios con condiciones de contorno.
+
+        Se utilizaron $4$ simulaciones para obtener los errores de cada gráfico.
 
         \subsection{Sin boids especiales}
             Para las simulaciones sin boids especiales, se estudia el comportamiento del sistema utilizando los siguientes parámetros:
@@ -339,7 +358,7 @@
                     \end{tabular}
                 \end{table}
             % \end{center}
-
+            \pagebreak
             \subsubsection{Polarización: Alineamiento}
                 Se varía el factor de la regla de \textit{alineamiento} para ver su impacto en la polarización del sistema.
 
@@ -383,7 +402,7 @@
                 y dado que el volúmen del universo es grande, la probabilidad de que dos boids se crucen es baja, por lo que toma más tiempo llegar a la polarización.
 
             \subsection{Con boids especiales}
-                Se agregan $3$ boids especiales y se estudia la variación del factor de la regla "\textit{Tendencia a}".
+                Se agregan $2$ boids especiales y se estudia la variación del factor de la regla "\textit{Tendencia a}".
 
                 \begin{figure}[H]
                     \centering
@@ -395,7 +414,7 @@
                 \begin{figure}[H]
                     \centering
                     \includegraphics[width=0.8\linewidth]{{../imgs/tendency_away}.png}
-                    \caption{Comportamiento: Tendencia a acercarse ($t < 0$)}
+                    \caption{Comportamiento: Tendencia a alejarse ($t < 0$)}
                     \label{fig:tendency_away}
                 \end{figure}
 
