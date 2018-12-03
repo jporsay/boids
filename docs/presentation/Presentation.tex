@@ -129,19 +129,19 @@
             \frametitle{Parámetros de simulación}
             \metroset{block=fill}
             \begin{block}{Tamaño del universo}
-                20m x 20m x 20m
+                32m x 32m x 32m
             \end{block}
             \begin{block}{Condiciones de contorno}
                 habilitadas
             \end{block}
             \begin{block}{Cantidad de boids}
-                1000
+                1024
             \end{block}
             \begin{block}{Cantidad de especiales}
                 0
             \end{block}
             \begin{block}{Distancia de interacción}
-                3m
+                2m
             \end{block}
         \end{frame}
         \begin{frame}
@@ -151,7 +151,7 @@
                 0.1m
             \end{block}
             \begin{block}{Radio: especiales}
-                0.4m
+                1.0m
             \end{block}
             \begin{block}{Velocidad máxima: boids}
                 32 m/s
@@ -165,19 +165,19 @@
             \frametitle{Reglas: Factores}
             \metroset{block=fill}
             \begin{block}{Alineamiento}
-                0.5
+                0.25
             \end{block}
             \begin{block}{Cohesión}
-                0.5
+                0.25
             \end{block}
             \begin{block}{Separación}
-                0.5
+                0.25
             \end{block}
             \begin{block}{Tendencia: Boid a Especial}
-                -0.8
+                -0.25
             \end{block}
             \begin{block}{Tendencia: Especial a Boid}
-                0.4
+                0.25
             \end{block}
         \end{frame}
         \begin{frame}
@@ -201,7 +201,7 @@
             \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{{../imgs/polarization_t2}.png}
         \end{frame}
         \begin{frame}[standout]
-            \frametitle{Tendencia a: t = 0.4}
+            \frametitle{Tendencia a: t = 0.4 (2 boids especiales)}
             \begin{tikzpicture}[remember picture,overlay]
                 \node[at=(current page.center)] {
                     \movie[width=0.55\paperwidth,height=0.55\paperwidth,showcontrols,autostart]
@@ -214,7 +214,7 @@
         \end{frame}
 
         \begin{frame}[standout]
-            \frametitle{Tendencia a: t = -0.4}
+            \frametitle{Tendencia a: t = -0.4 (2 boids especiales)}
             \begin{tikzpicture}[remember picture,overlay]
                 \node[at=(current page.center)] {
                     \movie[width=0.55\paperwidth,height=0.55\paperwidth,showcontrols,autostart]
